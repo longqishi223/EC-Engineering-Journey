@@ -52,7 +52,6 @@ Think of it as falling dominoes:
 
 **Key Takeaway for this Repository:** A significant portion of my code and notes here will focus on building the state machines that handle these exact transitions reliably, ensuring the system never gets stuck in a "dead state."
 
-
 ### 2. Thermal Management:
 
 While the operating system handles high-level performance profiles, the EC is the ultimate guardian of the hardware's thermal integrity. Even if the OS crashes (BSOD), the EC must independently maintain safe temperatures to prevent catastrophic silicon damage.
@@ -76,4 +75,5 @@ The EC is responsible for critical thermal safety nets that bypass software enti
 **Key Takeaway for this Repository:** I will document the implementation of fan control algorithms, explore how to parse thermal tables, and simulate ADC readings for thermistors to create a robust thermal management state machine.
 
 ---
+
 
