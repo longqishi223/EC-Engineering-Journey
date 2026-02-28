@@ -54,7 +54,7 @@ Think of it as falling dominoes:
 
 ---
 
-### 2. Thermal Management: Balancing Performance and Acoustics
+### 2. Thermal Management:
 
 While the operating system handles high-level performance profiles, the EC is the ultimate guardian of the hardware's thermal integrity. Even if the OS crashes (BSOD), the EC must independently maintain safe temperatures to prevent catastrophic silicon damage.
 
