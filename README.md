@@ -1,6 +1,6 @@
 # EC-Engineering-Journey
 
-Waiting for joining a job is very difficult, that is the main reason why I need this project to keep progeressing and learning. Let us go and do ourseleves!
+Waiting for joining a job is very difficult, that is the main reason why I need this project to keep progressing and learning. Let us go and do ourselves!
 
 ---
 
