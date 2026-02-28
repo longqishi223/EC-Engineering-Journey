@@ -13,7 +13,7 @@ In the architecture of modern laptops and PCs, the Embedded Controller is the un
 This repository documents my deep dive into EC firmware development and hardware-software interaction while waiting to officially start my career as an EC Firmware Engineer. 
 
 Here, you will find my learning notes, protocol analyses, and code practices focusing on:
-* **Power Management & ACPI:** Understanding system sleep states (S0-S5) and power up/down sequences.
+* **Power Management & Advanced Configuration and Power Interface (ACPI):** Understanding system sleep states (S0-S5) and power up/down sequences.
 * **Thermal Control:** Fan speed curves and temperature sensor monitoring.
 * **Low-Level Buses:** Mastering protocols like eSPI, LPC, SMBus, and I2C.
 * **HMI & Peripherals:** Keyboard matrix scanning and battery management.
@@ -22,9 +22,9 @@ Here, you will find my learning notes, protocol analyses, and code practices foc
 
 ## 🔬 Introduction: Understanding System Sleep States & Power Sequences
 
-In the realm of laptop motherboard design, power isn't just a simple "on" or "off." It is a highly orchestrated sequence of events managed primarily by the Embedded Controller (EC) in conjunction with the chipset (PCH/SoC). 
+In the realm of laptop motherboard design, power isn't just a simple "on" or "off." It is a highly orchestrated sequence of events managed primarily by the EC in conjunction with the chipset (PCH/SoC). 
 
-Understanding Advanced Configuration and Power Interface (ACPI) sleep states and hardware power sequences is the absolute foundation of EC firmware development. 
+Understanding ACPI sleep states and hardware power sequences is the absolute foundation of EC firmware development. 
 
 ### 1. The ACPI Sleep States (S0 - S5)
 The system transitions through various power states to balance performance and energy consumption. Even when the laptop appears "off," the EC is often still awake, monitoring for wake events (like a power button press or lid open).
