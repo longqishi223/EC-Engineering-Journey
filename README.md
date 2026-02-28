@@ -75,6 +75,3 @@ The EC is responsible for critical thermal safety nets that bypass software enti
 **Key Takeaway for this Repository:** I will document the implementation of fan control algorithms, explore how to parse thermal tables, and simulate ADC readings for thermistors to create a robust thermal management state machine.
 
 ---
-
-
-
