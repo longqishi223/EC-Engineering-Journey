@@ -74,7 +74,7 @@ The EC is responsible for critical thermal safety nets that bypass software enti
 
 **Key Takeaway for this Repository:** I will document the implementation of fan control algorithms, explore how to parse thermal tables, and simulate ADC readings for thermistors to create a robust thermal management state machine.
 
-#### 3. Low-Level Communication:
+### 3. Low-Level Communication:
 
 An Embedded Controller does not work in isolation. It must constantly exchange data with the host (CPU/PCH) and peripheral devices. Mastering these hardware communication protocols is essential for debugging and firmware development. 
 
@@ -95,4 +95,5 @@ These are the lower-speed buses used to gather data from the surrounding hardwar
 **Key Takeaway for this Repository:** You will find protocol analyzer logs (like Saleae Logic captures), notes on decoding eSPI virtual wires, and C code snippets demonstrating how to write robust SMBus host-controller drivers from scratch.
 
 ---
+
 
