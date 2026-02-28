@@ -1,6 +1,6 @@
 # EC-Engineering-Journey
 
-I have got an offer from a big company, and I cannot join in before July. The aim of this project is to learn some new skills to help be better after working.
+Waiting for joining a job is very difficult, that is the main reason why I need this project to keep progeressing and learning. Let us go and do ourseleves!
 
 ---
 
