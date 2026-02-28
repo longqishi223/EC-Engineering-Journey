@@ -62,7 +62,7 @@ Before the EC can control the fan, it needs to know how hot the system is. This 
 * **Motherboard Thermistors:** Analog sensors (NTC thermistors) placed near critical components (like the VRM/power stages or battery) read via the EC's internal ADC (Analog-to-Digital Converter).
 
 #### 2.2 Fan Speed Control (FSC)
-Once the temperatures are acquired, the EC calculates the target fan speed. 
+Once the temperatures are acquired, the EC calculates the target fan speed:
 * **PWM (Pulse Width Modulation):** The EC outputs a PWM signal to the fan controller IC to adjust the speed.
 * **TACH (Tachometer):** The EC reads the RPM feedback from the fan to ensure it hasn't stalled or failed.
 * **Thermal Tables vs. PID Control:** Modern ECs use either predefined step-based tables (e.g., if Temp > 60°C, PWM = 50%) or a Proportional-Integral-Derivative (PID) algorithm for smoother, quieter acoustic transitions.
@@ -75,5 +75,6 @@ The EC is responsible for critical thermal safety nets that bypass software enti
 **Key Takeaway for this Repository:** I will document the implementation of fan control algorithms, explore how to parse thermal tables, and simulate ADC readings for thermistors to create a robust thermal management state machine.
 
 ---
+
 
 
