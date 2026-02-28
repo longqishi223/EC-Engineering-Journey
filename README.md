@@ -53,3 +53,27 @@ Think of it as falling dominoes:
 **Key Takeaway for this Repository:** A significant portion of my code and notes here will focus on building the state machines that handle these exact transitions reliably, ensuring the system never gets stuck in a "dead state."
 
 ---
+
+### 2. Thermal Management: Balancing Performance and Acoustics
+
+While the operating system handles high-level performance profiles, the EC is the ultimate guardian of the hardware's thermal integrity. Even if the OS crashes (BSOD), the EC must independently maintain safe temperatures to prevent catastrophic silicon damage.
+
+#### 2.1 Temperature Sensing
+Before the EC can control the fan, it needs to know how hot the system is. This involves gathering data from multiple "Thermal Zones":
+* **CPU/GPU Die Temperature:** Read directly from the processor via interfaces like **PECI** (Platform Environment Control Interface) or encapsulated over **eSPI**.
+* **Motherboard Thermistors:** Analog sensors (NTC thermistors) placed near critical components (like the VRM/power stages or battery) read via the EC's internal ADC (Analog-to-Digital Converter).
+
+#### 2.2 Fan Speed Control (FSC)
+Once the temperatures are acquired, the EC calculates the target fan speed. 
+* **PWM (Pulse Width Modulation):** The EC outputs a PWM signal to the fan controller IC to adjust the speed.
+* **TACH (Tachometer):** The EC reads the RPM feedback from the fan to ensure it hasn't stalled or failed.
+* **Thermal Tables vs. PID Control:** Modern ECs use either predefined step-based tables (e.g., if Temp > 60°C, PWM = 50%) or a Proportional-Integral-Derivative (PID) algorithm for smoother, quieter acoustic transitions.
+
+#### 2.3 Hardware-Level Protections
+The EC is responsible for critical thermal safety nets that bypass software entirely:
+* **PROCHOT# (Processor Hot):** If temperatures get too high, the EC asserts this hardware signal to force the CPU to aggressively throttle its clock speed and voltage.
+* **THERMTRIP# (Thermal Trip):** The ultimate failsafe. If the CPU reaches a catastrophic temperature (e.g., 115°C+), this hardware signal triggers an immediate, ungraceful power-off (S5/G3) to save the motherboard from literally melting.
+
+**Key Takeaway for this Repository:** I will document the implementation of fan control algorithms, explore how to parse thermal tables, and simulate ADC readings for thermistors to create a robust thermal management state machine.
+
+---
