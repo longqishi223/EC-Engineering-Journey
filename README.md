@@ -74,4 +74,25 @@ The EC is responsible for critical thermal safety nets that bypass software enti
 
 **Key Takeaway for this Repository:** I will document the implementation of fan control algorithms, explore how to parse thermal tables, and simulate ADC readings for thermistors to create a robust thermal management state machine.
 
+#### 3. Low-Level Communication:
+
+An Embedded Controller does not work in isolation. It must constantly exchange data with the host (CPU/PCH) and peripheral devices. Mastering these hardware communication protocols is essential for debugging and firmware development. 
+
+Here are the primary buses I am focusing on in this repository:
+
+#### 3.1 Host Interface Buses (EC to PCH/CPU)
+These are the high-priority, dedicated lanes used by the EC to talk to the main system.
+* **LPC (Low Pin Count):** The legacy standard that replaced the ancient ISA bus. While older, understanding its cycle types (I/O, Memory, Firmware Hub) is a great foundation for legacy platform maintenance.
+* **eSPI (Enhanced Serial Peripheral Interface):** The modern, high-speed replacement for LPC driven by Intel and AMD. It uses fewer pins and lower voltage (1.8V). 
+  * *Focus areas:* Mastering its distinct channels—Peripheral Channel, Virtual Wire Channel (which replaces physical sideband signals), OOB (Out-of-Band) message channel, and Flash Access Channel.
+
+#### 3.2 Peripheral Interface Buses (EC to Sensors/Battery)
+These are the lower-speed buses used to gather data from the surrounding hardware.
+* **SMBus (System Management Bus):** Derived from I2C, but with stricter timing and electrical rules. In laptops, SMBus is the absolute lifeline for the **Smart Battery System (SBS)**. The EC uses it to read battery voltage, current, temperature, and charge status.
+  * *Focus areas:* PEC (Packet Error Checking) implementation, block reads/writes, and handling SMBus timeouts without hanging the EC.
+* **I2C (Inter-Integrated Circuit):** The classic, versatile two-wire bus. Used heavily by the EC to communicate with thermal sensors, USB PD (Power Delivery) controllers, and EEPROMs.
+
+**Key Takeaway for this Repository:** You will find protocol analyzer logs (like Saleae Logic captures), notes on decoding eSPI virtual wires, and C code snippets demonstrating how to write robust SMBus host-controller drivers from scratch.
+
 ---
+
