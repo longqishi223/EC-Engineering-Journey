@@ -20,13 +20,15 @@ Here, you will find my learning notes, protocol analyses, and code practices foc
 
 ---
 
-## 🔬 Introduction: Understanding System Sleep States & Power Sequences
+## 🔬 Introduction
+
+### 1. Power Management & Advanced Configuration and Power Interface (ACPI):
 
 In the realm of laptop motherboard design, power isn't just a simple "on" or "off." It is a highly orchestrated sequence of events managed primarily by the EC in conjunction with the chipset (PCH/SoC). 
 
 Understanding ACPI sleep states and hardware power sequences is the absolute foundation of EC firmware development. 
 
-### 1. The ACPI Sleep States (S0 - S5)
+#### 1.1 The ACPI Sleep States (S0 - S5)
 The system transitions through various power states to balance performance and energy consumption. Even when the laptop appears "off," the EC is often still awake, monitoring for wake events (like a power button press or lid open).
 
 | ACPI State | Name | Description | EC's Role / Status |
@@ -37,7 +39,7 @@ The system transitions through various power states to balance performance and e
 | **S5** | **Soft Off** | The system is completely shut down. No context is saved. | EC is running on "Always-On" (ALW) power, scanning the power button matrix. |
 | *(S0ix)* | *Modern Standby* | *A newer state replacing S3 in modern laptops, offering smartphone-like idle power with quick wake.* | *Complex power management interacting closely with the OS.* |
 
-### 2. The Art of Power Sequencing
+#### 1.2 The Art of Power Sequencing
 When you press the power button, the laptop doesn't just blast 20V everywhere. It follows a strict **Power-Up Sequence**. 
 
 Think of it as falling dominoes: 
