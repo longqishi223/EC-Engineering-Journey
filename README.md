@@ -78,8 +78,6 @@ The EC is responsible for critical thermal safety nets that bypass software enti
 
 An EC does not work in isolation. It must constantly exchange data with the host (CPU/PCH) and peripheral devices. Mastering these hardware communication protocols is essential for debugging and firmware development. 
 
-Here are the primary buses I am focusing on in this repository:
-
 #### 3.1 Host Interface Buses (EC to PCH/CPU)
 These are the high-priority, dedicated lanes used by the EC to talk to the main system.
 * **LPC (Low Pin Count):** The legacy standard that replaced the ancient ISA bus. While older, understanding its cycle types (I/O, Memory, Firmware Hub) is a great foundation for legacy platform maintenance.
@@ -95,6 +93,7 @@ These are the lower-speed buses used to gather data from the surrounding hardwar
 **Key Takeaway for this Repository:** You will find protocol analyzer logs (like Saleae Logic captures), notes on decoding eSPI virtual wires, and C code snippets demonstrating how to write robust SMBus host-controller drivers from scratch.
 
 ---
+
 
 
 
