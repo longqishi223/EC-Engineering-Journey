@@ -92,7 +92,7 @@ These are the lower-speed buses used to gather data from the surrounding hardwar
 
 ---
 
-### 4. Human-Machine Interface (HMI) & Peripherals:
+### 4. HMI & Peripherals:
 
 Beyond power and thermal control, the EC is the primary interface for direct user inputs and critical standalone peripherals. It manages components that require real-time responsiveness and rigorous safety checks.
 
@@ -109,3 +109,4 @@ The EC is the absolute brain behind the laptop's battery life and charging safet
 * **Safety Protocols:** If the battery temperature spikes, or if the user plugs in an undersized power adapter, the EC immediately throttles system performance or cuts off charging entirely to prevent thermal runaway or power adapter damage.
 
 ---
+
