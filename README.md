@@ -89,3 +89,23 @@ These are the lower-speed buses used to gather data from the surrounding hardwar
 * **SMBus:** Derived from I2C, but with stricter timing and electrical rules. In laptops, SMBus is the absolute lifeline for the Smart Battery System (SBS). The EC uses it to read battery voltage, current, temperature, and charge status.
   * *Focus areas:* Packet Error Checking (PEC) implementation, block reads/writes, and handling SMBus timeouts without hanging the EC.
 * **I2C:** The classic, versatile two-wire bus. Used heavily by the EC to communicate with thermal sensors, Universal Serial Bus Power Delivery (USB PD) controllers, and Electrically Erasable Programmable Read-Only Memory (EEPROM).
+
+---
+
+### 4. Human-Machine Interface (HMI) & Peripherals:
+
+Beyond power and thermal control, the EC is the primary interface for direct user inputs and critical standalone peripherals. It manages components that require real-time responsiveness and rigorous safety checks.
+
+#### 4.1 Keyboard Matrix Scanning
+Unlike external USB keyboards that have their own microcontrollers, a laptop's built-in keyboard is usually a passive matrix of traces connected directly to the EC's General-Purpose Input/Output (GPIO) pins.
+* **KSI / KSO (Keyboard Scan In / Out):** The EC actively drives signals down the column lines (KSO) and reads the row lines (KSI) to detect closed switches at the intersections.
+* **Debounce & Anti-Ghosting:** The firmware must implement robust algorithms to filter out the mechanical "bouncing" of keys and prevent "ghosting" (phantom key presses) when multiple keys are pressed simultaneously.
+* **Interrupt-Driven Wake:** To save power, the EC doesn't constantly poll the keyboard. Instead, a key press generates a hardware interrupt that can even wake the system from sleep states (like S3 or Modern Standby).
+
+#### 4.2 Battery Management & Charging
+The EC is the absolute brain behind the laptop's battery life and charging safety. It acts as the middleman between the power adapter, the battery pack, and the OS.
+* **Smart Battery System (SBS):** Using the previously mentioned SMBus, the EC continuously polls the battery's internal fuel gauge to read critical data: Relative State of Charge (RSOC), voltage, current, cycle count, and temperature.
+* **Charger IC Control:** Based on the battery's state and system load, the EC dynamically programs the discrete Charger IC (often via I2C/SMBus) to set the optimal charging voltage and current limits.
+* **Safety Protocols:** If the battery temperature spikes, or if the user plugs in an undersized power adapter, the EC immediately throttles system performance or cuts off charging entirely to prevent thermal runaway or power adapter damage.
+
+---
