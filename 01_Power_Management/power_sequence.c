@@ -19,13 +19,13 @@ void PowerSeq_Init(void) {
     
     // Initialize all simulated hardware signals to default (OFF) states
     hw_signals.pwr_btn_pressed = false;         // Power Button Input
-    hw_signals.ac_present = false;              //AC Adapter plugged in
+    hw_signals.ac_present = false;              // AC Adapter plugged in
     hw_signals.slp_s3_n = false;
     hw_signals.slp_s4_n = false;
     hw_signals.slp_s5_n = false;
-    hw_signals.pg_3v3_alw = false;              //Power Good (PG) signals from Voltage Regulators
-    hw_signals.pg_1v2_ram = false;              //Power Good (PG) signals from Voltage Regulators
-    hw_signals.pg_vcore = false;                //Power Good (PG) signals from Voltage Regulators
+    hw_signals.pg_3v3_alw = false;              // Power Good (PG) signals from Voltage Regulators
+    hw_signals.pg_1v2_ram = false;              // Power Good (PG) signals from Voltage Regulators
+    hw_signals.pg_vcore = false;                // Power Good (PG) signals from Voltage Regulators
     
     printf("[EC_PWR] Power Sequence Module Initialized.\n");
 }
@@ -117,4 +117,5 @@ void PowerSeq_Task(void) {
 
 SystemState_t Get_Current_System_State(void) {
     return current_state;
+
 }
