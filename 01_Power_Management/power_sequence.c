@@ -9,7 +9,7 @@
 
 // Global Variables
 static SystemState_t current_state = SYS_STATE_G3;
-static HardwareSignals_t hw_signals;
+HardwareSignals_t hw_signals;
 
 /**
  * @brief Initializes the power sequence module
@@ -117,5 +117,4 @@ void PowerSeq_Task(void) {
 
 SystemState_t Get_Current_System_State(void) {
     return current_state;
-
 }
