@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include "power_sequence.h"
 
-// 声明外部变量，这样我们就能在 main 函数里模拟硬件信号的改变了
+// Declare the external variable so we can simulate hardware signal changes in main()
 extern HardwareSignals_t hw_signals; 
 
 int main() {
@@ -14,49 +14,49 @@ int main() {
     printf("   EC Power Sequence Simulator Started   \n");
     printf("=========================================\n\n");
 
-    // 1. 初始化 EC 状态机
+    // 1. Initialize the EC state machine
     PowerSeq_Init();
 
-    // 2. 模拟插上电源适配器 (从 G3 完全断电 -> S5 待机)
+    // 2. Simulate plugging in the AC Adapter (From G3 Mechanical Off -> S5 Soft Off)
     printf("\n---> [USER ACTION] Plugging in AC Adapter...\n");
     hw_signals.ac_present = true;
-    PowerSeq_Task(); // 运行一次状态机
+    PowerSeq_Task(); // Run the state machine once
     
-    // 3. 模拟按下电源键开机 (S5 -> TRANSITION 过渡态)
+    // 3. Simulate pressing the power button to boot (S5 -> TRANSITION state)
     printf("\n---> [USER ACTION] Pressing Power Button...\n");
     hw_signals.pwr_btn_pressed = true;
-    PowerSeq_Task(); // 运行状态机，EC 检测到按键并唤醒 PCH
+    PowerSeq_Task(); // Run state machine; EC detects the button press and wakes the PCH
     
-    // 松开电源键 (机械按键不会一直按着)
+    // Release the power button (mechanical buttons are not held down indefinitely)
     hw_signals.pwr_btn_pressed = false; 
 
-    // 4. 继续运行状态机，让主板跑完上电时序 (TRANSITION -> S0)
+    // 4. Continue running the state machine to complete the power-up sequence (TRANSITION -> S0)
     printf("\n---> [SYSTEM] Continuing power sequence...\n");
-    PowerSeq_Task(); // PCH 发出 SLP 信号，EC 开启各路电源
+    PowerSeq_Task(); // PCH asserts SLP signals, EC turns on various power rails
     
-    // 检查是否成功进入 S0 (正常工作状态)
+    // Check if successfully entered S0 (Working State)
     if (Get_Current_System_State() == SYS_STATE_S0) {
         printf("\n*** SUCCESS: System is fully ON and running Windows/Linux (S0 State)! ***\n");
     }
 
-    // ---------------- 以下为进阶测试 ---------------- //
+    // ---------------- ADVANCED TESTING BELOW ---------------- //
 
-    // 5. 模拟合上盖子或点击睡眠 (S0 -> S3)
+    // 5. Simulate OS commanding a Sleep (S0 -> S3)
     printf("\n---> [USER ACTION] OS commands Sleep (S3)...\n");
-    hw_signals.slp_s3_n = false; // 模拟 PCH 拉低 SLP_S3# 信号
-    PowerSeq_Task(); // EC 侦测到信号，切断 CPU 供电但保持 RAM 供电
+    hw_signals.slp_s3_n = false; // Simulate PCH dropping the SLP_S3# signal
+    PowerSeq_Task(); // EC detects the signal drop, cuts CPU power but maintains RAM power
 
     if (Get_Current_System_State() == SYS_STATE_S3) {
         printf("\n*** SUCCESS: System is sleeping (S3). RAM is still powered. Zzz... ***\n");
     }
 
-    // 6. 模拟从睡眠中唤醒 (S3 -> TRANSITION -> S0)
+    // 6. Simulate waking up from sleep (S3 -> TRANSITION -> S0)
     printf("\n---> [USER ACTION] Pressing Power Button to Wake...\n");
     hw_signals.pwr_btn_pressed = true;
-    PowerSeq_Task(); // EC 触发唤醒事件
+    PowerSeq_Task(); // EC triggers the wake event
     
-    hw_signals.pwr_btn_pressed = false; // 松开按键
-    PowerSeq_Task(); // 走完唤醒流程
+    hw_signals.pwr_btn_pressed = false; // Release the button
+    PowerSeq_Task(); // Complete the wake-up transition
 
     if (Get_Current_System_State() == SYS_STATE_S0) {
         printf("\n*** SUCCESS: System woke up and is back to S0! ***\n");
