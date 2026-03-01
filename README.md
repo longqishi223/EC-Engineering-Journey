@@ -44,7 +44,7 @@ When you press the power button, the laptop doesn't just blast 20V everywhere. I
 
 Think of it as falling dominoes: 
 1. The EC detects the power button press.
-2. The EC asserts a signal (e.g., `RSMRST#` - Resume Reset) to wake the PCH (Platform Controller Hub).
+2. The EC asserts a signal (e.g., `RSMRST#` - Resume Reset) to wake the PCH **(Platform Controller Hub)**.
 3. The PCH responds by asserting sleep signals (e.g., dropping `SLP_S4#`, `SLP_S3#`).
 4. The EC reads these signals and starts turning on power rails in a specific order: Always-On power -> RAM power -> Chipset power -> CPU Vcore. 
 5. For every voltage rail turned on, the EC must receive a "Power Good" (PG) signal back. If a PG signal is missing, the EC halts the sequence to protect the motherboard (this is how we debug a "no boot" dead motherboard!).
@@ -93,6 +93,7 @@ These are the lower-speed buses used to gather data from the surrounding hardwar
 **Key Takeaway for this Repository:** You will find protocol analyzer logs (like Saleae Logic captures), notes on decoding eSPI virtual wires, and C code snippets demonstrating how to write robust SMBus host-controller drivers from scratch.
 
 ---
+
 
 
 
