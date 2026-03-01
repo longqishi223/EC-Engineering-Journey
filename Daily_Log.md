@@ -1,7 +1,7 @@
-# 📅 我的 EC 学习与开发日志
+# 📅 My EC Learning and Development Log
 
 ### 2026-03-01
-* **学习内容**：深入复习了 ACPI 的 S0 到 S3 睡眠状态切换逻辑。
-* **代码进展**：在 `01_Power_Management` 中完成了 `main.c` 的测试代码，成功模拟了按下电源键唤醒主板的过程。
-* **遇到的坑**：一开始没搞明白为什么进 S3 不能关 RAM 的电，查阅资料后理解了 Suspend to RAM 的本质。
-* **明日计划**：开始研究键盘矩阵（Keyboard Matrix）的消抖算法。
+* **Learning Content**: Deeply reviewed the logic of ACPI's S0 to S3 sleep state transitions.
+* **Code Progress**: In `01_Power_Management`, completed the test code for `main.c`, successfully simulating the process of waking up the motherboard by pressing the power button.
+* **Encountered Issues**: Initially, I didn't understand why entering S3 couldn't turn off the power of RAM. After researching, I understood the essence of Suspend to RAM.
+* **Tomorrow's Plan**: Start researching the debouncing algorithm for the keyboard matrix (Keyboard Matrix).
