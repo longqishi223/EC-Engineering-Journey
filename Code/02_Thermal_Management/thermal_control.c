@@ -25,7 +25,7 @@ static const ThermalTableStep_t fan_table[] = {
 
 void Thermal_Init(void) {
     current_pwm = 0;
-    prochot_asserted = false;
+    prochot_asserted = false;   //prochot means the protection of overheat of cpu
     shutdown_triggered = false;
     printf("[EC_THERM] Thermal Management Initialized. Fan is OFF.\n");
 }
