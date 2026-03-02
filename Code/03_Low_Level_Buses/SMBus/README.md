@@ -9,6 +9,7 @@ While it's easy to mock data in software, a true EC Firmware Engineer must under
 
 ## 1. The Physical Layer: Two Wires to Rule Them All
 
+The introduction of SMBus on CSDN: https://blog.csdn.net/caiji0169/article/details/142892183.
 
 SMBus is a two-wire interface derived from I2C. Physically, it consists of:
 * **SCL (Serial Clock):** Driven by the Host (the EC) to synchronize data transfers.
