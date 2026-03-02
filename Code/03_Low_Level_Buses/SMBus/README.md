@@ -59,7 +59,7 @@ uint16_t SMBus_Real_ReadWord(uint8_t slave_addr, uint8_t command) {
     uint32_t timeout = 0;
 
     // 1. Configure the hardware controller
-    SMBUS_ADDR_REG = (slave_addr << 1); 
+    SMBUS_ADDR_REG = (slave_addr << 1);     //send slave address to the address register so that the master know where the message go to.
     SMBUS_CMD_REG  = command;
 
     // 2. Pull the trigger (Hardware starts generating the SCL/SDA waveform)
