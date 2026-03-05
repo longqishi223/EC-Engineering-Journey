@@ -41,4 +41,14 @@ void I2C_Start(void) {
     GPIO_WriteBit(GPIOB, SDA_PIN, 0);
     Delay_us(5); // CPU is blocked here!
     GPIO_WriteBit(GPIOB, SCL_PIN, 0);
+
 }
+
+---
+
+## 4. The Initialization Phase: The Ultimate Proof of Control
+
+The clearest evidence of whether you are using Software or Hardware I2C lies in the initialization code. It reveals exactly who owns the physical pins.
+
+* **Software I2C (`GPIO_Mode_Out_OD`):** The code only configures the pins as standard General Purpose Outputs. The MCU's internal I2C hardware remains completely powered off. The CPU acts as the sole driver.
+* **Hardware I2C (`GPIO_Mode_AF_OD`):** The code configures the pins to use an **Alternate Function (AF)**. This effectively tells the CPU, *"Hand over control of these pins to the dedicated I2C hardware peripheral."* Consequently, you must also pass a configuration struct (like `I2C_InitStructure`) to set the hardware baud rate and ACK logic, finally turning the silicon on with `I2C_Cmd()`.
