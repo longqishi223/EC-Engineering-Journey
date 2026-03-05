@@ -43,6 +43,7 @@ void I2C_Start(void) {
     GPIO_WriteBit(GPIOB, SCL_PIN, 0);
 
 }
+```
 
 ---
 
