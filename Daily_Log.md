@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-05
+* **Learning Content**: Transitioned from STM32 Standard Peripheral Library (SPL) wrappers to bare-metal register operations. Uncovered the physical hardware logic hidden behind the APIs.
+* **Core Concepts Mastered**:
+  1. **Defensive Programming (`assert_param`)**: Validates inputs (like `I2Cx`) during Debug mode to prevent crashes; compiles to zero overhead in Release mode.
+  2. **Memory-Mapped I/O & `volatile` (`__IO`)**: Registers are just absolute memory addresses. The `volatile` keyword forces the CPU to fetch real-time hardware data instead of using cached optimizations.
+  3. **Bitwise Masking**: Using precise hex masks (e.g., `& 0xFF01` or `| 0x01`) to safely clear or set specific bits without corrupting adjacent data.
+  4. **Read-Modify-Write**: The golden rule for register safety. Read to a temp variable, modify target bits (like Address), and write back to protect unrelated switches (like `OAR2_ENDUAL`).
+* **Tomorrow's Plan**: Implement I2C "Burst Read" (Sequential Read) to maximize MPU6050 data fetching efficiency.
+
 ### 2026-03-04
 * **Learning Content**: Hardware I2C vs. Software I2C (Bit-banging). Mastered the architectural difference: Hardware I2C uses dedicated silicon state machines to offload CPU overhead, while Software I2C relies on CPU-blocking delays but offers maximum pin flexibility.
 * **Code Progress**: Implemented STM32 bare-metal I2C communication with the MPU6050 sensor. Transitioned from GPIO toggling to hardware register commanding (e.g., `AF_OD`, `I2C_GenerateSTART`). Handled sensor initialization (`PWR_MGMT_1`) and 16-bit data merging (`<< 8`).
