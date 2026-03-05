@@ -1,6 +1,6 @@
 # EC-Engineering-Journey
 
-Waiting for joining a job is very difficult, that is the main reason why I need this project to keep progressing and learning. Let us go and do ourselves!
+Waiting to start a new job is really tough, which is exactly why I need this project to keep myself learning and moving forward. Let's dive right in!
 
 ---
 
@@ -109,4 +109,5 @@ The EC is the absolute brain behind the laptop's battery life and charging safet
 * **Safety Protocols:** If the battery temperature spikes, or if the user plugs in an undersized power adapter, the EC immediately throttles system performance or cuts off charging entirely to prevent thermal runaway or power adapter damage.
 
 ---
+
 
