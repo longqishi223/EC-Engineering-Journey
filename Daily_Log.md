@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-06
+* **Learning Content**: Explored advanced STM32 I2C hardware quirks, interrupt configurations, and register multiplexing logic.
+* **Core Concepts Mastered**:
+  1. **Hardware Interrupts (`CR2`)**: Configured Event/Error/Buffer interrupts using `|=` and `&= ~` masks, allowing the CPU to avoid blocking `while` loops (Polling) and handle bus states asynchronously.
+  2. **The 2-Byte NACK Bug (`CR1_POS`)**: Uncovered the STM32 hardware flaw during 2-byte reception. Used `I2C_NACKPositionConfig` to force the hardware to apply NACK to the *next* byte in the shift register, preventing data overflow.
+  3. **Register Multiplexing (SMBus PEC)**: Discovered that hardware designers reuse the exact same `POS` bit for both I2C NACK timing and SMBus PEC (Packet Error Checking). ST uses semantic API wrappers (different function names) for readability.
+  4. **Control vs. Data Flow**: Solidified the physical boundary between Control Registers (`CR1/CR2` act as the "driver" issuing internal commands) and Data Registers (`DR` acts as the "cargo" holding actual SDA bus payloads).
+* **Tomorrow's Plan**: Translate this low-level mastery into code by writing a highly efficient "Burst Read" (Sequential Read) algorithm for the MPU6050.
+
 ### 2026-03-05
 * **Learning Content**: Transitioned from STM32 Standard Peripheral Library (SPL) wrappers to bare-metal register operations. Uncovered the physical hardware logic hidden behind the APIs.
 * **Core Concepts Mastered**:
