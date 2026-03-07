@@ -1,5 +1,15 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-07
+* **Learning Content**: Decoded ST's standard library source code (`stm32f10x_i2c.c`), uncovering 32-bit macro routing tricks, hardware clearing mechanisms.
+* **Core Concepts Mastered**:
+  1. **32-Bit Macro Routing (`>> 28` & `FLAG_Mask`)**: Discovered how ST packs both the register address tag (SR1 vs. SR2) and the physical bitmask into a single `I2C_FLAG` variable, using bitwise shifts and masks to extract the pure hardware address.
+  2. **Interrupt Alignment Magic (`>> 16`)**: Learned that `I2C_IT_XXX` macros embed the `CR2` interrupt enable bit in the high byte. Shifting it right by 16 aligns it perfectly with the physical silicon, allowing dual-checking of state and interrupt switches in one go.
+  3. **The `rc_w0` Quirk (Write 0 to Clear)**: Mastered the hardware-level error clearing mechanism (`I2Cx->SR1 = ~flagpos;`). Writing a `0` clears the target bit, while writing a `1` is safely ignored by the hardware, preventing race conditions.
+  4. **Clock Stretching & Software Sequences**: Realized that event flags (`ADDR`, `BTF`) cannot be cleared directly. They require strict read/write sequences (e.g., reading SR1 then SR2) to release the SCL line; otherwise, the bus deadlocks.
+  5. **EC Career Path (C vs. C++)**: Solidified that pure C (pointers, memory mapping, bitwise logic) is the absolute king for EC firmware and bare-metal, while Modern C++ acts as a strategic upgrade for higher-level systems (Robotics/OS).
+* **Tomorrow's Plan**: Dissect the `I2C_TypeDef` struct memory mapping logic, or finally write the highly anticipated "Burst Read" algorithm for the MPU6050.
+
 ### 2026-03-06
 * **Learning Content**: Explored advanced STM32 I2C hardware quirks, interrupt configurations, and register multiplexing logic.
 * **Core Concepts Mastered**:
