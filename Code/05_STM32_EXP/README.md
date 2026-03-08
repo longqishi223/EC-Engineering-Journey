@@ -6,6 +6,8 @@ This directory (`05_STM32_EXP`) is dedicated to tearing down, understanding, and
 
 Instead of merely calling high-level HAL (Hardware Abstraction Layer) functions, the approach here is **bottom-up and bare-metal**. We dissect the ST Standard Peripheral Library (`stm32f10x_xxx.c`) line by line, mapping C structures to physical silicon registers, bitmasks, and hardware state machines.
 
+The introduction of GPIO (General Purpose Input/Output): https://cloud.tencent.com/developer/article/2352362.
+
 ## 🎯 Why Dissect These Three Protocols? (The "Why")
 
 For an Embedded Controller (EC) firmware engineer, relying on "black box" libraries is a fatal weakness. When a smart battery stops responding, or a BIOS update over an SPI flash fails, high-level APIs won't tell you why. 
@@ -53,5 +55,6 @@ Throughout these sub-directories, the learning process follows a strict routine:
 2. **Source Code Autopsy**: Deconstruct ST's `stm32f10x_xxx.c` files to uncover C-language architecture tricks (e.g., mapping structs to absolute memory addresses, pointer casting, bitwise masking).
 3. **Bare-Metal Implementation**: Write clean, state-machine-driven algorithms (like Burst Reads) without relying on blocking `while()` loops wherever possible.
 4. **Logic Analysis**: Verify the physical waveforms (SCL/SDA, SCK/MOSI/MISO, TX/RX) against the theoretical code.
+
 
 > *"To command the hardware, you must speak its native tongue: Registers."*
