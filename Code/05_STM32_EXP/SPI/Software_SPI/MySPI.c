@@ -56,7 +56,7 @@ uint8_t MySPI_SwapByte(uint8_t ByteSend)
 	for (i = 0; i < 8; i ++)
 	{
 		MySPI_W_MOSI(ByteSend & (0x80 >> i));
-		MySPI_W_SCK(1);     //The transmiting begins when SCK changes from 0 to 1.
+		MySPI_W_SCK(1);     //The transmiting begins when SCK changes from 0 to 1. When the SCK is 1, the value of data shouldn't change because of the reading.
 		if (MySPI_R_MISO() == 1){ByteReceive |= (0x80 >> i);}
 		MySPI_W_SCK(0);
 	}
