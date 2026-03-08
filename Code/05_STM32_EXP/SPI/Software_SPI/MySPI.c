@@ -35,18 +35,18 @@ void MySPI_Init(void)
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
-	MySPI_W_CS(1);
-	MySPI_W_SCK(0);
+	MySPI_W_CS(1);          //CS equals 1 means the bus is free and it will not communicate with other slavers.
+	MySPI_W_SCK(0);         //SCK equals 1 means when the bus is free the value of SCK is 0 (low).
 }
 
 void MySPI_Start(void)
 {
-	MySPI_W_CS(0);
+	MySPI_W_CS(0);          //CS equals 0 means the bus will communicate with other slavers.
 }
 
 void MySPI_Stop(void)
 {
-	MySPI_W_CS(1);
+	MySPI_W_CS(1);          //CS equals 1 means the bus is free and it will not communicate with other slavers.
 }
 
 uint8_t MySPI_SwapByte(uint8_t ByteSend)
