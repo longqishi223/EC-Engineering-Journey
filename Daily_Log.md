@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-08
+* **Learning Content**: Analyzed Software SPI (Bit-banging) physical timing and introduced the HID protocol (Application Layer).
+* **Core Concepts Mastered**:
+  1. **Software SPI (`SwapByte`)**: Visualized the shift-register ring exchange. Confirmed TX/RX are exactly simultaneous. Mapped the manual GPIO toggling to SPI Mode 0 (CPOL=0, CPHA=0).
+  2. **Hardware Multiplexing (`I2SMOD`)**: Discovered STM32 reuses SPI silicon for I2S (digital audio). The `I2SMOD` bit must be forcefully cleared to keep the bus in pure SPI mode.
+  3. **The HID Abstraction**: Shifted from physical buses to OS-level protocols. Learned that HID achieves driverless Plug-and-Play via a **Report Descriptor**—a hardcoded contract telling the OS how to parse raw byte arrays.
+  4. **EC Relevance**: Hardware SPI (eSPI) is mandatory for high-speed CPU comms. HID over I2C/SPI is the absolute standard for translating laptop hardware (keyboards, hotkeys) into native Windows events.
+* **Tomorrow's Plan**: Decode a real-world HID Report Descriptor and map hexadecimal arrays to official USB-IF Usage Tables.
+
 ### 2026-03-07
 * **Learning Content**: Decoded ST's standard library source code (`stm32f10x_i2c.c`), uncovering 32-bit macro routing tricks, hardware clearing mechanisms.
 * **Core Concepts Mastered**:
