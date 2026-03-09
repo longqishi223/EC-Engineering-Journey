@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-09
+* **Learning Content**: Decoded a physical HID Report Descriptor, implemented payload bit-packing in C, and analyzed the AI PC (NPU) hardware architecture.
+* **Core Concepts Mastered**:
+  1. **Descriptor Decoding**: Translated hex arrays using USB-IF Usage Tables (Tag-Value pairs). Mastered "Bit vs. Byte" packing (`REPORT_SIZE` vs. `REPORT_COUNT`) to achieve extreme bandwidth optimization.
+  2. **Payload Bit-Packing**: Wrote C code using bitwise operations (`|= 1 << X`) to strictly align physical hardware states (buttons) with the descriptor's byte contract. 
+  3. **Dynamic Sizing (`sizeof`)**: Understood why descriptor length must be calculated dynamically in memory to prevent OS enumeration failures (Error 43).
+  4. **AI PC Architecture & NPU**: Contrasted CPU, GPU, and NPU (measured in TOPS). Identified how low-power NPUs disrupt traditional EC design, requiring new PID thermal curves, S0ix wake sequences for "always-on" vision, and Copilot key HID mapping.
+* **Tomorrow's Plan**: Explore Vendor-Defined HID descriptors for custom OEM hardware (e.g., hotkeys) or dive into the C-level mathematics of PID thermal control.
+
 ### 2026-03-08
 * **Learning Content**: Analyzed Software SPI (Bit-banging) physical timing and introduced the HID protocol (Application Layer).
 * **Core Concepts Mastered**:
