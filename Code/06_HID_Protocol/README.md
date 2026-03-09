@@ -8,6 +8,8 @@ Originally created for USB devices (keyboards, mice, joysticks), the HID protoco
 
 This directory (`06_HID_Protocol`) is dedicated to decoding how a piece of silicon convinces a massive Operating System to understand its data natively.
 
+The HID usage table can be found at https://www.usb.org/hid.
+
 ## 🎯 Why Learn HID? (EC Engineering Perspective)
 
 When the business department asks about HID, they are usually asking: *"How do we get our custom hardware (a new touchpad, a special hotkey, a sensor) to be instantly recognized by Windows?"*
