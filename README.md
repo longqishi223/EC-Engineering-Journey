@@ -17,6 +17,9 @@ Here, you will find my learning notes, protocol analyses, and code practices foc
 * **Thermal Control:** Fan speed curves and temperature sensor monitoring.
 * **Low-Level Buses:** Mastering protocols like Enhanced Serial Peripheral Interface (eSPI), Low Pin Count (LPC), System Management Bus (SMBus), and Inter-Integrated Circuit (I2C).
 * **Human-Machine Interface (HMI) & Peripherals:** Keyboard matrix scanning and battery management.
+* **STM32 Bare-Metal Programming:** Dissecting hardware registers, exploring C-language memory mapping, and implementing low-level peripheral drivers from scratch.
+* **HID Protocol & OS Integration:** Decoding Report Descriptors and achieving driverless Plug-and-Play communication for custom vendor-defined devices.
+* **AI PC Architecture:** Analyzing the impact of Neural Processing Units (NPUs) on modern system states, heterogeneous computing, and next-generation EC thermal/power strategies.
 
 ---
 
@@ -110,6 +113,30 @@ The EC is the absolute brain behind the laptop's battery life and charging safet
 
 ---
 
+### 5. STM32 Bare-Metal Programming
+To truly master firmware, relying on high-level HAL (Hardware Abstraction Layer) functions is insufficient. This module focuses on tearing down the abstraction to understand silicon-level execution.
+* **Register-Level Manipulation:** Deconstructing C-language structs to see how they map directly to physical memory addresses (e.g., `CR1`, `SR`, `DR`).
+* **Timing & State Machines:** Understanding setup/hold times by writing Software SPI/I2C from scratch using raw GPIO bit-banging, contrasting it with the efficiency of hardware shift registers.
+* **Hardware Multiplexing:** Decoding how MCU architects reuse silicon for different protocols (e.g., toggling the `I2SMOD` bit to switch between SPI and audio I2S).
+
+---
+
+### 6. HID Protocol & OS Integration
+Bridging the gap between physical hardware and the Operating System. HID (Human Interface Device) is the universal language for driverless Plug-and-Play.
+* **The Report Descriptor:** Constructing the hexadecimal "contract" that tells Windows/Linux exactly how to parse incoming bitstreams (e.g., defining X/Y axes and physical buttons).
+* **Memory Alignment & Bit Packing:** Utilizing `#pragma pack(1)` and bitwise operations to forcefully compress sensor data into the smallest possible byte arrays to save precious bus bandwidth.
+* **Vendor-Defined Devices:** Tunneling custom OEM hardware data (e.g., specific hotkeys or fan speed GUI controls) through native I2C-HID or USB-HID without writing custom Windows kernel drivers (KMDF).
+
+---
+
+### 7. AI PC Architecture
+The introduction of Microsoft's Copilot+ PC standard and the integration of Neural Processing Units (NPUs) into modern silicon fundamentally changes laptop architecture and EC firmware strategies.
+* **Heterogeneous Computing:** Balancing tasks across the CPU (logic), GPU (heavy rendering), and **NPU** (low-power matrix multiplication / MACs for AI inference).
+* **NPU & The TOPS Metric:** Understanding how Trillion Operations Per Second (TOPS) dictates a machine's local AI capabilities (e.g., real-time background blur, local LLMs) at extremely low wattages (2-3W).
+* **Impact on EC Firmware:**
+  * **Always-On Sensing:** NPUs handling ultra-low-power facial recognition in the background to trigger EC wake sequences (S0ix) without touching the keyboard.
+  * **Thermal Strategy Shifts:** NPU-heavy workloads generate lower heat than GPU workloads, requiring entirely new fan curves to prevent unnecessary acoustic noise.
+  * **Physical Architecture:** Routing the mandatory Copilot key through the EC's keyboard matrix and HID descriptor.
 
 
-
+---
