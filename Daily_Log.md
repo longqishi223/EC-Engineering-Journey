@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-10
+* **Learning Content**: Upgraded the project repository architecture and dissected STM32 SPI Control Register (`SPI_CR1`) macros to map C code directly to physical silicon behaviors.
+* **Core Concepts Mastered**:
+  1. **Repository Architecture**: Integrated STM32 Bare-Metal, HID Protocol, and AI PC frameworks into the GitHub README, demonstrating full-stack system engineering visibility.
+  2. **Hardware Register Mapping**: Translated abstract C macros into physical register bit-masks. Understood how passing `0x0000` forcefully clears target bits in the hardware state machine.
+  3. **Master/Slave Selection (`MSTR`)**: Analyzed how `SPI_Mode_Slave` (`0x0000`) clears Bit 2 of `SPI_CR1`, cutting off the internal clock generator and forcing the SCK pin into a passive listening state.
+  4. **Data Frame Format (`DFF`)**: Mapped `SPI_DataSize_16b` (`0x0800`) to Bit 11, revealing how toggling a single bit physically expands the shift register from 8 to 16 bits to optimize bandwidth for high-resolution peripherals.
+* **Tomorrow's Plan**: Unpack the baud rate/clock prescaler configurations or tear down the underlying bitwise logic (`&=` and `|=`) inside the `SPI_Init()` library function.
+
 ### 2026-03-09
 * **Learning Content**: Decoded a physical HID Report Descriptor, implemented payload bit-packing in C, and analyzed the AI PC (NPU) hardware architecture.
 * **Core Concepts Mastered**:
