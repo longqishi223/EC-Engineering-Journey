@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-11
+* **Learning Content**: Transitioned to RTOS fundamentals by deeply dissecting STM32 physical memory addressing, C pointer mechanics, and ARM Linker memory alignment rules.
+* **Core Concepts Mastered**:
+  1. **Pointer Mechanics & `void *`**: Clarified the critical distinction between *pointer functions* (e.g., `void* my_malloc()` returning a raw address) and *function pointers* (essential for RTOS task scheduling). Mastered `void *` as a universal, size-agnostic memory address contract.
+  2. **Physical Byte-Addressing**: Visually verified SRAM (`0x20000000`) in Keil's Memory window. Confirmed that all pointers (regardless of their target type) strictly occupy 4 bytes on a 32-bit CPU.
+  3. **Linker Memory Alignment**: Discovered the "invisible hand" of the ARM Linker. It dynamically rearranges global variables (placing a 4-byte `int` before a 1-byte `char` array, ignoring C-code sequence) to enforce strict 4-byte hardware alignment and eliminate memory padding waste.
+  4. **Simulator Debugging & Vector Table**: Resolved Keil Simulator `Error 65` (RCC peripheral access violation) by correcting Dialog DLL mappings. Peeked into the hardware Interrupt Vector Table (`0x00000064`) to identify repeated `Default_Handler` function pointers.
+* **Tomorrow's Plan**: Initialize a FreeRTOS blank project and apply these memory/pointer concepts to dissect Task Creation (`xTaskCreate`) and individual task stack allocation.
+
 ### 2026-03-10
 * **Learning Content**: Upgraded the project repository architecture and dissected STM32 SPI Control Register (`SPI_CR1`) macros to map C code directly to physical silicon behaviors.
 * **Core Concepts Mastered**:
