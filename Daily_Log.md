@@ -1,5 +1,11 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-12
+* **Learning Content**: Transitioned from C-level abstractions to physical memory architecture and successfully built a modern VS Code + Keil MDK hybrid toolchain for upcoming RTOS development.
+* **Core Concepts Mastered**:
+  **Cross-IDE Toolchain Integration**: Hijacked Keil's native `armcc` compiler inside VS Code using the `Keil Assistant` extension. Resolved XML parsing "Silent Crashes" by enforcing a strict English-only, no-space workspace path.
+* **Tomorrow's Plan**: Leverage this hybrid workspace to dive into FreeRTOS source code, specifically dissecting `xTaskCreate` and how the OS allocates independent, private stacks for multi-threading.
+
 ### 2026-03-11
 * **Learning Content**: Transitioned to RTOS fundamentals by deeply dissecting STM32 physical memory addressing, C pointer mechanics, and ARM Linker memory alignment rules.
 * **Core Concepts Mastered**:
