@@ -1,5 +1,15 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-13
+* **Learning Content**: Transitioned from bare-metal C to FreeRTOS multithreading logic, dissecting the boot sequence, task creation contracts, and atomic hardware operations critical for RTOS thread safety.
+* **Core Concepts Mastered**:
+  1. **The Startup Sequence (`.s` File)**: Demystified the hardware boot process before `main()`. Understood how the assembly file aggressively initializes the SP (Stack Pointer), copies `.data` to SRAM, and builds the Vector Table. Realized FreeRTOS *must* hijack `SysTick`, `PendSV`, and `SVC` handlers here to enable context switching.
+  2. **The RTOS Task Contract (`TaskFunction_t`)**: Dissected why a task must return `void` (a task is an isolated infinite loop; attempting to `return` without a valid LR causes a HardFault) and accept `void *` (enabling universal, polymorphic parameter injection). Verified that function names natively decay into physical Flash addresses passed to the TCB.
+  3. **Task Handles & Preemption Hazards**: Differentiated Task Handles (`&xHandleTask1` for strict lifecycle control) vs. `NULL` ("Fire and Forget" mode). Identified the fatal system crash risks of using bare-metal `Delay()` or unthrottled `printf()` inside tasks, which trigger CPU monopolization and instant Stack Overflows.
+  4. **Atomic Hardware Bit-Banding (`BSRR`/`BRR` vs `ODR`)**: Analyzed ST's silicon design. Uncovered the fatal Read-Modify-Write (RMW) vulnerability of the `ODR` register in multithreaded environments. Mastered the use of `BSRR` (Set) and `BRR` (Reset) for single-cycle, atomic hardware writes that are immune to RTOS task preemption or interrupt corruption.
+  5. **GPIO Independence vs. EXTI Multiplexing**: Clarified the physical routing limits. While GPIO outputs (like PA0 and PB0) are fully independent, hardware external interrupts are strictly multiplexed (e.g., PA0, PB0, PC0 all compete for the single `EXTI0` line, enforcing a "survival of the fittest" rule).
+* **Tomorrow's Plan**: Utilize Keil's Logic Analyzer to visually verify the FreeRTOS scheduler's time-slicing (Time Slicing/Context Switching), or dive into IPC (Inter-Process Communication) mechanisms like Queues and Semaphores to sync the tasks.
+
 ### 2026-03-12
 * **Learning Content**: Transitioned from C-level abstractions to physical memory architecture and successfully built a modern VS Code + Keil MDK hybrid toolchain for upcoming RTOS development.
 * **Core Concepts Mastered**:
