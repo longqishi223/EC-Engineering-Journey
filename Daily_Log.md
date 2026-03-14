@@ -1,5 +1,15 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-14
+* **Learning Content**: Modernized the development workflow using VS Code and dissected the physical execution of FreeRTOS task creation and hardware atomicity.
+* **Core Concepts Mastered**:
+  1. **Cross-IDE Workflow**: Integrated VS Code with Keil Assistant. Resolved the "Silent Crash" XML error by enforcing strict ASCII-only directory paths, eliminating non-standard character parsing failures in the build toolchain.
+  2. **Task Creation Physics**: Decoded `xTaskCreate` parameters. Verified that task functions decay into Flash addresses and understood the "Handle vs NULL" trade-off for task lifecycle control (TCB pointer management).
+  3. **Atomic Hardware Operations**: Mastered the use of `BSRR` and `BRR` registers over `ODR`. Understood how hardware-level atomic bit-setting prevents "Read-Modify-Write" race conditions during RTOS task preemption.
+  4. **Debugging Visibility**: Identified the scope limitations of `static` and `stack-based` local variables in debugging. Mastered `volatile` global declarations to ensure memory visibility for the Keil Logic Analyzer.
+  5. **RTOS Boot Hooks**: Analyzed the STM32 startup file (`.s`) to understand how FreeRTOS hijacks `SysTick` and `PendSV` interrupts to take control of the Program Counter (PC) for context switching.
+* **Tomorrow's Plan**: Run the Logic Analyzer to visually verify the RTOS scheduler's time-slicing behavior and begin exploring Inter-Process Communication (IPC) using Queues.
+
 ### 2026-03-13
 * **Learning Content**: Transitioned from bare-metal C to FreeRTOS multithreading logic, dissecting the boot sequence, task creation contracts, and atomic hardware operations critical for RTOS thread safety.
 * **Core Concepts Mastered**:
