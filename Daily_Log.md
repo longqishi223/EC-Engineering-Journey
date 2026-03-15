@@ -1,5 +1,16 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-15
+* **Learning Content**: Dived into FreeRTOS kernel configuration, exploring the Idle Task lifecycle, C-language linkage rules for debugging, and the core macros governing preemptive and time-sliced scheduling.
+* **Core Concepts Mastered**:
+  1. **Heap Exhaustion & `pdPASS`**: Understood that `xTaskCreate` is fundamentally a dynamic RAM allocation operation. Mastered the necessity of verifying the `pdPASS` return value to prevent silent system crashes caused by heap depletion.
+  2. **Internal Linkage vs. Logic Analyzer**: Solved the `Undefined Identifier` error by recognizing that the `static` keyword applies "internal linkage," hiding symbols from external debuggers. Enforced global `volatile` variables to ensure memory visibility on the hardware bus.
+  3. **The Hollywood Principle & Idle Hook**: Dissected `vApplicationIdleHook`. Realized the Idle Task automatically handles system-level garbage collection (freeing deleted TCBs/Stacks). Learned to inject user-level background tasks (e.g., watchdog feeding, low-power modes) while strictly avoiding blocking APIs (`printf`, `vTaskDelay`) to prevent kernel paralysis.
+  4. **Scheduler Engine Configuration**: Decoded the ultimate RTOS macros in `FreeRTOSConfig.h`:
+     * `configUSE_PREEMPTION = 1`: Enables strict, priority-based CPU hijacking (jungle rules).
+     * `configUSE_TIME_SLICING = 1`: Enables SysTick-driven Round-Robin scheduling for tasks of *equal* priority, preventing CPU starvation.
+* **Tomorrow's Plan**: Finalize the Logic Analyzer setup to capture the exact waveforms of `taskflagrun` variables, visually proving the Round-Robin time-slicing and Preemption mechanics in real-time. Then, advance to Inter-Process Communication (IPC).
+
 ### 2026-03-14
 * **Learning Content**: Modernized the development workflow using VS Code and dissected the physical execution of FreeRTOS task creation and hardware atomicity.
 * **Core Concepts Mastered**:
