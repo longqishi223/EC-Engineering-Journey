@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-16
+* **Learning Content**: Transitioned from RTOS concurrency control and IPC mechanisms to C++ Object-Oriented memory management and compiler-level name resolution rules.
+* **Core Concepts Mastered**:
+  1. **RTOS Concurrency & IPC**: Differentiated Mutexes (featuring Priority Inheritance to prevent Priority Inversion) from Spinlocks (fatal on single-core, mitigated via CPU Critical Sections). Evaluated IPC efficiency: Shared Memory (Zero-copy but requires polling) vs. Message Queues (Event-driven blocking) vs. Task Notifications (Highest performance).
+  2. **C++ Encapsulation & Memory**: Explored `friend` functions for controlled encapsulation bypass (e.g., operator overloading). Mastered the necessity of custom Deep Copy Constructors to prevent "Double Free" segmentation faults caused by default shallow copies.
+  3. **C++ Name Resolution & Macros**: Mapped the rigid boundaries between Overloading (same scope, different signatures), Overriding (vtable, `override` keyword, covariant returns), and Name Hiding (cross-scope shadowing, bypassable via `using`). Dissected `#define` macro mechanics including token pasting (`##`) and stringification (`#`).
+  4. **FreeRTOS OOP Paradigm**: Decoded `xTaskCreate`'s `void *pvParameters`. Leveraged dynamic pointer casting to achieve code reuse, instantiating multiple unique task behaviors from a single generic task function.
+* **Tomorrow's Plan**: Implement a generic task function passing a complex `struct` via `pvParameters`, and observe Mutex priority inheritance or Message Queue blocking states using the Keil Logic Analyzer.
+
 ### 2026-03-15
 * **Learning Content**: Dived into FreeRTOS kernel configuration, exploring the Idle Task lifecycle, C-language linkage rules for debugging, and the core macros governing preemptive and time-sliced scheduling.
 * **Core Concepts Mastered**:
