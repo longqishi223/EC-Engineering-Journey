@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-17
+* **Learning Content**: Dived deep into FreeRTOS internal memory mechanics (Ring Buffers & Unions) and transitioned to modern C++ memory management (Lvalue vs. Rvalue references).
+* **Core Concepts Mastered**:
+  1. **RTOS Memory Squeezing**: Decoded the `union` in FreeRTOS `QueueDefinition`. Understood that Semaphores and Mutexes are essentially "data-less queues" reusing the same memory footprint to save SRAM.
+  2. **Ring Buffer Physics**: Debunked the "data shifting" illusion in Queues. Mastered the "pointer chasing" mechanism where `Read` and `Write` pointers progress from low to high addresses without moving physical data (unrelated to CPU Endianness).
+  3. **Scheduling Philosophy**: Differentiated task yielding strategies: `vTaskDelay` (forces Blocked state) vs. `taskYIELD()` (PendSV-triggered cooperative sharing, returns to Ready state) vs. Priority Preemption (event-driven).
+  4. **C++ Zero-Copy & Move Semantics**: Demystified references. Proved `T&` (Lvalue) is a safe, auto-dereferenced `const` pointer for zero-copy sharing, while `T&&` (Rvalue) enables "Move Semantics" to safely hijack memory from dying temporary objects.
+* **Tomorrow's Plan**: Apply the zero-copy pointer philosophy to FreeRTOS Queues to efficiently pass a large `struct` without triggering catastrophic `memcpy` overhead, and explore ISR-to-Task (Interrupt Service Routine) communication.
+
 ### 2026-03-16
 * **Learning Content**: Transitioned from RTOS concurrency control and IPC mechanisms to C++ Object-Oriented memory management and compiler-level name resolution rules.
 * **Core Concepts Mastered**:
