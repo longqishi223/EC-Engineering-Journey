@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-18
+* **Learning Content**: Systematically decoded FreeRTOS IPC mechanisms (Queue Sets, Semaphores, Mutexes) and dived into bottom-level C++11 move semantics and CPU-level Atomic operations.
+* **Core Concepts Mastered**:
+  1. **Queue Set Multiplexing**: Understood `Queue Set` as the RTOS version of `epoll`. Mastered the strict "one ticket, one fetch" physical rule and the necessity of exact memory sizing to prevent event loss.
+  2. **Semaphore vs. Mutex Philosophy**: Completely separated the concepts. Semaphores are for "Event Synchronization" (Wait/Trigger, no ownership, interrupt-safe), while Mutexes are for "Resource Protection" (Strict ownership, prevents Priority Inversion via Priority Inheritance, absolutely NO interrupts).
+  3. **IPC Performance Trade-offs**: Weighed Message Queues (safe FIFO, block/wake OS integration, but has `memcpy` overhead) against Shared Memory + Mutex (Absolute zero-copy, but vulnerable to state overwrite and deadlocks).
+  4. **Software to Silicon (std::move & Atomics)**: Demystified `std::move` as a pure compiler cast to `T&&` (Rvalue) to legally hijack memory. Pushed down to the silicon level to understand how `std::atomic` uses hardware bus-locks for 1-cycle thread safety, crushing OS-level Mutexes for simple variables.
+* **Tomorrow's Plan**: Implement the ultimate "Zero-Copy + OS Notification" cheat code: using a FreeRTOS Queue to pass physical pointers of a massive shared memory block, fusing the high performance of Shared Memory with the elegant blocking mechanisms of Queues.
+
 ### 2026-03-17
 * **Learning Content**: Dived deep into FreeRTOS internal memory mechanics (Ring Buffers & Unions) and transitioned to modern C++ memory management (Lvalue vs. Rvalue references).
 * **Core Concepts Mastered**:
