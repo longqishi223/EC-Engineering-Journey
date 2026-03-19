@@ -1,5 +1,13 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-19
+* **Learning Content**: Advanced FreeRTOS Synchronization Mechanisms & Code Review (Recursive Mutexes, Event Groups, and RTOS Anti-patterns).
+* **Core Concepts Mastered**:
+  1. **The Polling Anti-Pattern & Mutex Ownership**: Conducted a hardcore code review on a toxic `while(1)` spinlock. Reaffirmed the physical laws of Mutexes: **Never `Give` a lock you didn't `Take`**. Mastered the principle of replacing zero-timeout polling with OS-level blocking (`portMAX_DELAY`) to prevent CPU starvation.
+  2. **Recursive Mutex (The Self-Deadlock Antidote)**: Decoded the internal "nesting depth counter" of `xSemaphoreTakeRecursive`. Understood its architectural necessity: allowing a task to take the same lock multiple times without permanently locking itself out (crucial for protecting nested library calls in large-scale industrial code).
+  3. **Event Group (The OS-Level AND/OR Gate)**: Smashed a classic FreeRTOS trap question. Analyzed the bitmask logic of `xEventGroupWaitBits`. Verified that the RTOS natively supports "Wait for ANY bit" (OR logic) and "Wait for ALL bits" (AND logic) via the `xWaitForAllBits` parameter, but fundamentally cannot natively process "Wait for N out of M" (complex threshold logic).
+* **Tomorrow's Plan**: Transition from theory and code review to actual system design. Build a multi-sensor data fusion architecture using a combination of Queues (for data) and Event Groups (for synchronization triggers).
+
 ### 2026-03-18
 * **Learning Content**: Systematically decoded FreeRTOS IPC mechanisms (Queue Sets, Semaphores, Mutexes) and dived into bottom-level C++11 move semantics and CPU-level Atomic operations.
 * **Core Concepts Mastered**:
