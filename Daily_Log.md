@@ -1,5 +1,17 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-20
+* **Learning Content**: Decoded C++ Object Model Internals (vptr, vtable, Polymorphism) and Mastered FreeRTOS Ultimate IPC Mechanisms (Barrier Synchronization & Task Notifications).
+* **Core Concepts Mastered**:
+  1. **The "Polymorphism Assassination" (Virtual Destructors)**: Exposed the lethal memory leak trap in C++. Understood that without a `virtual` destructor, deleting a derived object via a base pointer triggers Static Binding, silently abandoning the derived class's memory. 
+  2. **C++ `vtable` & `vptr` (The 8-Byte Tax)**: Smashed the illusion of object methods. Functions live in the `.text` segment. Adding `virtual` forces the compiler to inject a hidden 8-byte `vptr` into the object, pointing to a class-level `vtable` (function pointer array) to achieve Dynamic Binding.
+  3. **Overload vs. Override (Compile-time vs. Runtime)**: 
+     - **Overload**: A compiler illusion. Uses Name Mangling (e.g., `_Z5Printi`) to create completely independent functions.
+     - **Override**: True polymorphism. Replaces the base class's function pointer inside the `vtable` with the derived class's function pointer.
+  4. **Event Group Sync (The RTOS Barrier)**: Analyzed `xEventGroupSync`. Mastered the atomic operation of "Setting my flag & Waiting for others." Proved that it instantly yields the CPU (entering Blocked state) with zero-polling overhead until the entire system reaches the synchronization barrier.
+  5. **Task Notifications (The Ultimate IPC Weapon)**: Discovered the absolute performance ceiling of FreeRTOS. By writing directly to the `ulNotifiedValue` and `ucNotifyState` inside the target's Task Control Block (TCB), it eliminates all intermediate IPC objects (queues/semaphores). Yields a 45% speed boost with zero extra RAM, acting as the ultimate chameleon (Simulating Semaphores, Event Groups, and Mailboxes).
+* **Tomorrow's Plan**: Shift from architectural theory to hardcore coding. Implement a bare-metal to RTOS refactoring using Task Notifications to replace legacy polling loops, proving the 45% performance gain on actual silicon.
+
 ### 2026-03-19
 * **Learning Content**: Advanced FreeRTOS Synchronization Mechanisms & Code Review (Recursive Mutexes, Event Groups, and RTOS Anti-patterns).
 * **Core Concepts Mastered**:
