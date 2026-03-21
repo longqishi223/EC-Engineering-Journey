@@ -1,5 +1,13 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-21
+* **Learning Content**: FreeRTOS Preemptive Scheduling, Hardware-Level Critical Sections, and IPC Consumption Physics (Mailbox vs. Task Notifications).
+* **Core Concepts Mastered**:
+  1. **Preemptive Scheduling (The Absolute Rule of Preemption)**: Eliminated the misconception of cooperative scheduling. Confirmed that APIs like `xTaskNotifyGive` instantly trigger a context switch (via PendSV interrupt) *before returning*. If the awakened task has a higher priority, the current task is immediately preempted, regardless of its execution state.
+  2. **Critical Sections (Hardware-Level Time Stop)**: Analyzed `taskENTER_CRITICAL()` and its physical mechanism of masking hardware interrupts (e.g., via the `BASEPRI` register). Understood its necessity for preventing "Data Tearing" in multi-byte operations, while strictly acknowledging its danger: calling blocking APIs inside this section will cause catastrophic system failure.
+  3. **IPC Consumption Physics (Mailbox vs. Notify Overwrite)**: Decoded the difference between non-destructive and destructive reads. A standard Mailbox (`xQueuePeek`) leaves data intact for multiple reads. Conversely, Task Notification with `eSetValueWithOverwrite` is a destructive read ("burn after reading"); calling `xTaskNotifyWait` fetches the value and physically clears the notification state, allowing only a single read.
+* **Tomorrow's Plan**: Solidify this week's hardcore theory by writing a practical code snippet using Task Notifications (`eSetValueWithOverwrite`) to replace a legacy bare-metal polling loop, or lightly explore FreeRTOS Software Timers to see how the OS handles time-delayed events without blocking tasks.
+
 ### 2026-03-20
 * **Learning Content**: Decoded C++ Object Model Internals (vptr, vtable, Polymorphism) and Mastered FreeRTOS Ultimate IPC Mechanisms (Barrier Synchronization & Task Notifications).
 * **Core Concepts Mastered**:
