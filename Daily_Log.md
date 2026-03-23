@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-23
+* **Learning Content**: FreeRTOS Software Timers Internals (Daemon Task, Command Queue, and Callback Physics).
+* **Core Concepts Mastered**:
+  1. **The ISR vs. Task Architecture**: Shattered the illusion that software timers run inside the hardware Tick ISR. To prevent catastrophic system halts, FreeRTOS defers timer callback execution to a dedicated, high-privilege system thread called the "Timer Service Task" (or Daemon Task).
+  2. **The "No-Blocking" Ironclad Rule**: Since ALL software timer callbacks execute within the context of the *single* shared Daemon Task, calling ANY blocking API (e.g., `vTaskDelay`, `xSemaphoreTake(..., portMAX_DELAY)`) inside a callback is a fatal architectural sin. It will instantly paralyze the entire OS software timer subsystem.
+  3. **The Timer Command Queue Illusion**: Discovered that APIs like `xTimerStart()` and `xTimerStop()` do not directly manipulate timer hardware or lists. They are simply IPC wrappers that send instruction messages via a hidden `Timer Command Queue` to the Daemon Task. This perfectly explains why `xTimerStart` requires a `xTicksToWait` parameter (to handle scenarios where the command queue is full).
+  4. **Daemon Task Priority Starvation**: Identified a critical system failure mode. If `configTIMER_TASK_PRIORITY` is set lower than heavy CPU-bound user tasks, the Daemon Task will never get CPU time to read the command queue. Commands will pile up, and timers will fail to trigger, destroying the system's real-time timeline.
+* **Tomorrow's Plan**: Shift to practical application. Write a clean, non-blocking timer callback implementation to toggle LEDs/states, and inspect `FreeRTOSConfig.h` to physically tune the Daemon Task's priority and Command Queue length.
+
 ### 2026-03-21
 * **Learning Content**: FreeRTOS Preemptive Scheduling, Hardware-Level Critical Sections, and IPC Consumption Physics (Mailbox vs. Task Notifications).
 * **Core Concepts Mastered**:
