@@ -1,5 +1,17 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-24
+* **Learning Content**: Hardware ISR Physics, Daemon Task Starvation, and FreeRTOS `FromISR` API Kernel Anatomy.
+* **Core Concepts Mastered**:
+  1. **The Physical Truth of ISRs**: Demystified the hardware timer. It is merely a silicon countdown mechanism that sends an IRQ electrical signal. Timers do not "run" code; rather, the IRQ forces the CPU to jump to a fixed memory address (`SysTick_Handler`). 
+  2. **Daemon Task Starvation & The Polling Trap**: Conducted a hardcore code review on a flawed implementation. Proved that a high-priority `while(1)` loop lacking a blocking API (like `vTaskDelay`) will monopolize CPU time slices, completely starving the internal Timer Service Task and silently killing all software timers.
+  3. **The `FromISR` API Architecture (3 Physical Rules)**: Analyzed kernel source code (`xQueueGenericSendFromISR`) to validate OS rules in hardware interrupt contexts:
+     - *Zero Blocking*: Complete removal of the `xTicksToWait` parameter. ISRs must execute deterministically and cannot wait.
+     - *Nested Interrupt Protection*: Utilizing `uxSavedInterruptStatus` to carefully preserve and restore hardware priority states without blinding the entire system.
+     - *Deferred Context Switch*: Using the `pxHigherPriorityTaskWoken` pointer and manually calling `portYIELD_FROM_ISR()` to safely defer the preemptive context switch until the very end of the ISR routine, preventing stack corruption.
+  4. **The OS Priority Boundary**: Decoded `portASSERT_IF_INTERRUPT_PRIORITY_INVALID()`. Understood that hardware interrupts configured with a priority higher than `configMAX_SYSCALL_INTERRUPT_PRIORITY` are outside the RTOS's jurisdiction and are strictly forbidden from calling any FreeRTOS APIs.
+* **Tomorrow's Plan**: Shift focus from execution flow to memory physics. Explore FreeRTOS Memory Management (Heap_1 to Heap_5) to understand how the OS statically or dynamically allocates TCBs and Queues without fragmenting the microcontroller's limited RAM.
+
 ### 2026-03-23
 * **Learning Content**: FreeRTOS Software Timers Internals (Daemon Task, Command Queue, and Callback Physics).
 * **Core Concepts Mastered**:
