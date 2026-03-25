@@ -1,5 +1,15 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-25
+* **Learning Content**: FreeRTOS Concurrency Defense, Cortex-M Interrupt Priority Architecture, `configASSERT` Forensics, and Stack Overflow Detection (Watermarking).
+* **Core Concepts Mastered**:
+  1. **Concurrency Defense Tiers**: Clarified the physical difference between locking the scheduler (`vTaskSuspendAll` for Task vs. Task) and masking hardware interrupts (`taskENTER_CRITICAL` for Task vs. ISR). 
+  2. **The Hardware Priority Red Line**: Decoded the Cortex-M priority system (lower number = higher priority). Identified `configMAX_SYSCALL_INTERRUPT_PRIORITY` (e.g., 191) as the OS boundary. Priorities 0-190 are unrestricted "god-tier" hardware interrupts (OS APIs strictly forbidden), while the OS kernel itself sits at the lowest priority (255) to guarantee real-time hardware responsiveness.
+  3. **ISR Context Snapshots**: Understood why `taskENTER_CRITICAL_FROM_ISR` cannot simply hardcode the BASEPRI register to 0 upon exit. It must save and restore the exact hardware state (`uxSavedInterruptStatus`) to preserve Cortex-M interrupt nesting layers.
+  4. **The OS Self-Destruct Sequence**: Demystified `configASSERT`. It is not an error handler, but a "crime-scene freezing" mechanism (`while(1)`) often enhanced with `__FILE__` and `__LINE__` for pinpoint debugging. It is physically compiled out in Release builds to save ROM and CPU cycles.
+  5. **Stack Overflow Forensics (Method 2)**: Mastered the `0xA5` "Poison Pill / Watermark" technique. The OS paints the entire stack with `0xA5` upon creation and inspects the physical floor for "footprints". Decoded Richard Barry's cross-platform macro magic: `pucStackByte -= portSTACK_GROWTH`, which elegantly translates to `+= 1` (moving upwards from the floor) on ARM architectures where the stack grows downwards (`portSTACK_GROWTH = -1`).
+* **Tomorrow's Plan**: Step into the ultimate FreeRTOS battlefield: Memory Management (Heap_1 through Heap_5). Analyze how the OS allocates TCBs and Queues, fights memory fragmentation, and keeps the system stable, OR write practical code to query and print a Task's High Water Mark (`uxTaskGetStackHighWaterMark`).
+
 ### 2026-03-24
 * **Learning Content**: Hardware ISR Physics, Daemon Task Starvation, and FreeRTOS `FromISR` API Kernel Anatomy.
 * **Core Concepts Mastered**:
