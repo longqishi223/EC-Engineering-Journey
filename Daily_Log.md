@@ -1,5 +1,13 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-26
+* **Learning Content**: FreeRTOS Run Time Statistics (CPU Load Calculation) and High-Resolution Hardware Timer Physics.
+* **Core Concepts Mastered**:
+  1. **The OS Tick Blind Spot**: Shattered the illusion that the standard OS Tick (e.g., 1ms SysTick) can accurately measure CPU usage. Short-lived tasks that execute and yield entirely within a single Tick period become invisible "ghosts," leading to grossly inaccurate load calculations (0% recorded runtime).
+  2. **The High-Resolution Hardware Stopwatch**: Discovered the strict architectural prerequisite for enabling Run Time Stats (`vTaskGetRunTimeStats`). The OS mandates an independent, high-frequency hardware timer (ideally 10x-100x faster than the SysTick) to act as an unblinking physical stopwatch.
+  3. **Context Switch Accounting**: Mapped the exact physical moments of timekeeping. At every Context Switch boundary, the kernel records the precise timestamp when a task enters and exits the CPU state ($T_{out} - T_{in}$). This delta is instantly accumulated into the Task Control Block's (TCB) `ulRunTimeCounter`, allowing for sub-millisecond precision accounting.
+* **Tomorrow's Plan**: Finalize the macro configurations for Run Time Stats (`portCONFIGURE_TIMER_FOR_RUN_TIME_STATS`) OR dive directly into the ultimate FreeRTOS battlefield: Memory Management (Analyzing the physical evolution from Heap_1 to Heap_5 and how Heap_4 prevents fragmentation).
+
 ### 2026-03-25
 * **Learning Content**: FreeRTOS Concurrency Defense, Cortex-M Interrupt Priority Architecture, `configASSERT` Forensics, and Stack Overflow Detection (Watermarking).
 * **Core Concepts Mastered**:
