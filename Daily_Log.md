@@ -1,5 +1,16 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-27
+* **Learning Content**: FreeRTOS Queue Memory Architecture, Ring Buffer Pointer Mechanics, and the IPC Union Secret.
+* **Core Concepts Mastered**:
+  1. **The Physical Queue Illusion**: Shattered the "magic pipe" illusion of IPC. A FreeRTOS Queue is fundamentally just a contiguous RAM array (Ring Buffer) bound by absolute physical floor (`pcHead`) and ceiling (`pcTail`) pointers.
+  2. **The Asymmetric Pointer Dance**: Mastered the counter-intuitive but mathematically elegant pointer mechanics:
+     - *Write Pointer (`pcWriteTo`)*: "Write, then increment." Always points to the next available empty slot.
+     - *Read Pointer (`pcReadFrom`)*: "Increment, then read." Always points to the *last consumed* (abandoned) slot. 
+     - *Architectural Brilliance*: This built-in offset allows the kernel to instantly determine an "Empty Queue" state simply by checking if `pcWriteTo == pcReadFrom`, bypassing complex arithmetic.
+  3. **The Ultimate IPC Union**: Uncovered Richard Barry's architectural masterpiece within `QueueDefinition`. Discovered that Semaphores and Mutexes are physically identical to Queues at the core level. By using a C `union`, they recycle the exact same Task blocking/unblocking logic and data structures, simply ignoring the data buffer allocation.
+* **Tomorrow's Plan**: Trace the physical execution path of a "Queue Full" scenario (investigating how a Task gets knocked out and thrown into the `xTasksWaitingToSend` list) OR transition to the ultimate FreeRTOS endgame: Memory Management (Heap_1 through Heap_5).
+
 ### 2026-03-26
 * **Learning Content**: FreeRTOS Run Time Statistics (CPU Load Calculation) and High-Resolution Hardware Timer Physics.
 * **Core Concepts Mastered**:
