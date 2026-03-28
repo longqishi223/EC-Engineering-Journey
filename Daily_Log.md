@@ -1,5 +1,13 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-28
+* **Learning Content**: FreeRTOS Memory Management Architecture, `heap_1` Physical Implementation, and MISRA C Safety Philosophy.
+* **Core Concepts Mastered**:
+  1. **The Static Array Illusion**: Shattered the illusion of dynamic allocation. Discovered that `heap_1` avoids true dynamic heap mechanisms by reserving a massive, static global `uint8_t` array (`ucHeap`) in the `.bss` segment at compile time.
+  2. **Deterministic O(1) Allocation**: Mastered the "Sausage Slicer" algorithm. `pvPortMalloc` simply increments a single pointer (`pxNextFreeByte`) upwards through the array to carve out chunks for TCBs and Stacks. This guarantees an absolute, deterministic execution time crucial for real-time responsiveness.
+  3. **The "No-Free" Survival Law**: Decoded the deliberate omission of `vPortFree()`. Understood that in life-critical systems (aerospace, automotive ABS, medical devices), memory fragmentation and unpredictable allocation times are strictly banned (e.g., by MISRA C standards). `heap_1` provides absolute physical safety, zero fragmentation, and zero memory leaks for "create-once-and-run-forever" static architectures.
+* **Tomorrow's Plan**: Trace the chaotic evolution of memory management. Explore `heap_2` to witness the catastrophic fragmentation caused by introducing a basic `free()` function, OR skip directly to the industrial gold standard, `heap_4`, to master the ultimate "memory block coalescing" algorithm.
+
 ### 2026-03-27
 * **Learning Content**: FreeRTOS Queue Memory Architecture, Ring Buffer Pointer Mechanics, and the IPC Union Secret.
 * **Core Concepts Mastered**:
