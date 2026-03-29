@@ -1,5 +1,18 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-29
+* **Learning Content**: FreeRTOS Scheduler Mechanics, RAM/Flash Memory Physical Layout, TCB Anatomy, and Absolute Time Management.
+* **Core Concepts Mastered**:
+  1. **SysTick & Time Slicing**: Shattered the illusion of infinite loops. Understood that `configUSE_TIME_SLICING = 1` empowers the hardware SysTick interrupt to forcefully preempt tasks of equal priority (Round-Robin), slicing CPU time mechanically.
+  2. **Physical Memory Map (`.data` vs `.bss`)**: Demystified the `static` keyword and memory initialization. Flash holds immutable `.text` and initializer backups. The `startup.s` assembly physically copies `.data` to RAM and ruthlessly zeros out `.bss` (which physically houses `heap_1`'s massive `ucHeap` array).
+  3. **TCB Anatomy & Pointer Physics**: 
+     - *Inline Data vs Pointers*: Discovered that TCBs embed critical data (state list items, task names, priorities) directly as inline structures to prevent fragmentation and CPU cache misses, reserving pointers exclusively for the dynamically sized Stacks.
+     - *Stack Overflow Math*: Mastered the downward-growing ARM stack forensic formula: `pxTopOfStack <= pxStack` (comparing absolute physical addresses, completely stripping away the `*` dereference trap).
+     - *The OS HR Analogy*: Solidified that Tasks are blind "employees"; the TCB is the kernel's strictly classified "HR file" used exclusively by the scheduler to manipulate task states.
+  4. **Scheduler Boot & Ready List FIFO**: Traced the elusive `pxCurrentTCB` pointer during task creation. Uncovered that higher-priority tasks instantly hijack this pointer, while equal-priority tasks queue strictly FIFO (First-In, First-Out) in the Ready List via `vListInsertEnd`.
+  5. **Time Drift Defense (`vTaskDelayUntil`)**: Contrasted `vTaskDelay` (Relative time, highly vulnerable to execution-time drift) with `xTaskDelayUntil` (Absolute time). Mastered the physical mechanism of anchoring cycle times (`&Pre`) to guarantee strict periodicity for critical industrial applications like Motor PID control and audio sampling.
+* **Tomorrow's Plan**: Step into the ultimate FreeRTOS Memory Management battlefield: Uncover how `Heap_4` actively merges adjacent free memory blocks to solve the fragmentation chaos left behind by `Heap_2`.
+
 ### 2026-03-28
 * **Learning Content**: FreeRTOS Memory Management Architecture, `heap_1` Physical Implementation, and MISRA C Safety Philosophy.
 * **Core Concepts Mastered**:
