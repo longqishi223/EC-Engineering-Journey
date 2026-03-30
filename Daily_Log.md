@@ -1,5 +1,16 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-03-30
+* **Learning Content**: FreeRTOS Preemptive vs. Cooperative Scheduling, Priority 0 Cohabitation, and Logic Analyzer Waveform Forensics (`configIDLE_SHOULD_YIELD`).
+* **Core Concepts Mastered**:
+  1. **Boot Selection vs. Runtime Eviction**: Corrected the preemption misconception. Discovered that turning off preemption (`configUSE_PREEMPTION = 0`) does *not* change the initial task execution order; `pxCurrentTCB` always guarantees the highest priority task boots first. Preemption only dictates whether a running task can be forcibly evicted later.
+  2. **The Priority 0 Illusion**: Shattered the myth that Priority 0 is exclusively reserved for the OS Idle Task. User tasks can legally share this priority, triggering Round-Robin time-slicing alongside the system's garbage collector.
+  3. **The Yielding Physics (`configIDLE_SHOULD_YIELD`)**: Analyzed logic analyzer waveforms to map software macros to physical electrical signals:
+     - *YIELD = 1 (Needle Waveforms)*: The Idle Task acts as a "submissive gentleman," instantly aborting its CPU time slice if other Priority 0 tasks are ready. This risks Idle Task starvation, leading to fatal memory leaks (unfreed zombie tasks).
+     - *YIELD = 0 (Square Waveforms)*: The Idle Task acts as an equal citizen, refusing to yield until the hardware SysTick forces a context switch, ensuring perfect time-slicing.
+  4. **Absolute Preemption Dominance**: Visually verified that regardless of Priority 0 yielding mechanics, a high-priority task (e.g., Task 3) acts as an absolute guillotine, instantly hijacking the CPU the microsecond it unblocks.
+* **Tomorrow's Plan**: Step into the ultimate FreeRTOS Memory Management battlefield: Uncover the "Memory Coalescing" magic of `Heap_4` and how it physically stitches fragmented RAM blocks back together.
+
 ### 2026-03-29
 * **Learning Content**: FreeRTOS Scheduler Mechanics, RAM/Flash Memory Physical Layout, TCB Anatomy, and Absolute Time Management.
 * **Core Concepts Mastered**:
