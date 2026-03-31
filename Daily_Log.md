@@ -9,7 +9,7 @@
      - *Task Notifications*: The ultimate RAM-saving weapon that bypasses queue creation entirely by writing directly to the target's TCB.
   2. **ISR Physics & The 3 Iron Rules**: Defined ISR as a hardware-triggered preemptive strike that completely freezes the OS scheduler. Enforced the absolute survival rules: 1. Lightning fast execution; 2. Absolute ban on blocking APIs (`vTaskDelay`); 3. Mandatory use of `FromISR` API variants.
   3. **Deferred Context Switching**: Demystified `xQueueSendFromISR`. Understood how the `pxHigherPriorityTaskWoken` flag safely records if a high-priority task was awakened, deferring the actual CPU context switch (`portYIELD_FROM_ISR`) until the very end of the interrupt to prevent stack corruption.
-  4. **Queue Pointer Passing & `sprintf` **: Decoded `sprintf` as a tool for writing formatted strings directly into physical RAM. Optimized Queue RAM by sending a 4-byte pointer instead of copying entire 30-byte string buffers (Pass-by-Reference). Identified and sealed the fatal trap of passing local stack variable pointers by enforcing `static` or global buffers.
+  4. **Queue Pointer Passing & `sprintf`**: Decoded `sprintf` as a tool for writing formatted strings directly into physical RAM. Optimized Queue RAM by sending a 4-byte pointer instead of copying entire 30-byte string buffers (Pass-by-Reference). Identified and sealed the fatal trap of passing local stack variable pointers by enforcing `static` or global buffers.
 * **Tomorrow's Plan**: Trace the pointer out of the queue on the consumer side, or officially unlock the FreeRTOS Memory Management final boss: The `Heap_4` block coalescing algorithm.
 
 ### 2026-03-30
