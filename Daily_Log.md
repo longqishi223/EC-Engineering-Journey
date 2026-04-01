@@ -1,5 +1,16 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-01
+* **Learning Content**: FreeRTOS Binary Semaphore Physics, API Asymmetry, and the "Vanishing Error" Mystery (`portMAX_DELAY`).
+* **Core Concepts Mastered**:
+  1. **The "Empty Box" Initial State**: Verified that `xSemaphoreCreateBinary()` creates a semaphore with an initial value of 0 (empty). This is the fundamental physical difference from Mutexes (initial 1), making binary semaphores the perfect tool for "waiting for a signal" rather than "protecting a resource."
+  2. **The Asymmetry of Give vs. Take**: 
+     - *The Producer (Give)*: Hardcoded as a "Non-blocking" action (`xTicksToWait = 0`). In event-driven systems, producers like ISRs cannot wait; if the buffer is full, the event is simply dropped (resulting in `Give ERR`).
+     - *The Consumer (Take)*: Designed for "Patient Waiting." By providing `xTicksToWait`, the task can gracefully transition from the Ready List to the Blocked List, avoiding CPU wastage.
+  3. **The Physics of Blocking**: Analyzed how `portMAX_DELAY` triggers a "Physical Disappearance" of the task. The kernel removes the TCB from the Ready List and hangs it on the Semaphore's waiting list, ensuring zero CPU overhead until a `Give` occurs.
+  4. **The Mystery of the "Missing Take Error"**: Solved the forensic puzzle of why `Take ERR` never appeared in the logs. Understood that `portMAX_DELAY` creates an infinite block—the code never reaches the `else` (Error) branch because the task is physically suspended until it succeeds.
+* **Tomorrow's Plan**: Shift the focus to the "Ownership" model. Unlock the mystery of the Mutex and how its "Priority Inheritance" magic prevents the fatal "Priority Inversion" deadlock.
+
 ### 2026-03-31
 * **Learning Content**: FreeRTOS IPC (Inter-Process Communication) Arsenal, ISR (Interrupt Service Routine) Hardware Privileges, and Queue Memory Optimization (Pass-by-Reference).
 * **Core Concepts Mastered**:
