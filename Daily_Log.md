@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-02
+* **Learning Content**: The Grand Unification of FreeRTOS IPC, Mutex Ownership, and Recursive Mutex Physics.
+* **Core Concepts Mastered**:
+  1. **The IPC Grand Unification (Queue as the Universal Engine)**: Discovered that Semaphores and Mutexes are physically just Queues under the hood. The API `xSemaphoreGive` is a macro that calls `xQueueGenericSend` with a payload pointer of `NULL` and an item size of `0`. This zero-copy execution achieves extreme speed while reusing the queue's blocking/unblocking mechanisms.
+  2. **The "Ownership" Contract (Mutex vs. Binary Semaphore)**: Differentiated the physical structure of a Mutex. Unlike a Binary Semaphore, a Mutex utilizes a C `union` within the `QueueDefinition` to store the `xMutexHolder` (a pointer to the `pxCurrentTCB` of the task that took it). This strict binding enables Priority Inheritance but relies on the programmer's discipline (No `configASSERT` in release builds = unauthorized unlocking is mechanically possible but architecturally fatal).
+  3. **Recursive Mutex Physics (The "Russian Doll" Lock)**: Mastered the mechanics of `xSemaphoreTakeRecursive`. It utilizes the `uxRecursiveCallCount` variable. It bypasses the blocking state if the requesting task's TCB matches the `xMutexHolder`. Formulated the iron rule: The number of `GiveRecursive` calls must strictly match the `TakeRecursive` calls for the `CallCount` to reach `0` and physically release the lock.
+  4. **The Deadlock Core & Priority Inversion**: Identified the "Hold and Wait" condition as the hidden killer in Deadlocks. Analyzed the Priority Inversion waveform, distinguishing it from a true Deadlock, and understanding how a medium-priority task can hijack the CPU while a high-priority task is blocked by a low-priority lock holder.
+* **Tomorrow's Plan**: Finalize the deep dive into Priority Inheritance implementation details and unlock the ultimate lightweight communication weapon: **Task Notifications**. Compare its speed and RAM footprint against the legacy Queue-based IPC.
+
 ### 2026-04-01
 * **Learning Content**: FreeRTOS Binary Semaphore Physics, API Asymmetry, and the "Vanishing Error" Mystery (`portMAX_DELAY`).
 * **Core Concepts Mastered**:
