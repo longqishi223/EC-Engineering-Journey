@@ -2,7 +2,7 @@
 
 ### 2026-04-03
 * **Learning Content**: Task Notification Physics & RTOS Causality.
-* **Core Logic**:
+* **Core Concepts Mastered**:
   1. **TCB-Based IPC**: Task Notifications use the 32-bit `ulNotifiedValue` inside the TCB. No external objects = 45% faster and zero RAM overhead.
   2. **Unidirectional Causality**: `Give/Take` are software APIs for Task sync. Only Tasks "sleep" (Blocked); Interrupts are hardware-driven and never block or wait for software signals.
   3. **Atomic Counter**: `Give` increments the TCB counter; `Take` is a "conditional sleep" that yields the CPU only if the counter is 0.
