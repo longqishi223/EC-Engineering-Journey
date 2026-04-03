@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-03
+* **Learning Content**: Task Notification Physics & RTOS Causality.
+* **Core Logic**:
+  1. **TCB-Based IPC**: Task Notifications use the 32-bit `ulNotifiedValue` inside the TCB. No external objects = 45% faster and zero RAM overhead.
+  2. **Unidirectional Causality**: `Give/Take` are software APIs for Task sync. Only Tasks "sleep" (Blocked); Interrupts are hardware-driven and never block or wait for software signals.
+  3. **Atomic Counter**: `Give` increments the TCB counter; `Take` is a "conditional sleep" that yields the CPU only if the counter is 0.
+  4. **The Swiss Army Knife**: `xTaskNotify` uses `eAction` to transform the 32-bit variable into an Event Group, a Mailbox, or a Counting Semaphore.
+* **Tomorrow's Plan**: Master the receiving end with `xTaskNotifyWait` to achieve precise bit extraction and "State-Bit" management.
+
 ### 2026-04-02
 * **Learning Content**: The Grand Unification of FreeRTOS IPC, Mutex Ownership, and Recursive Mutex Physics.
 * **Core Concepts Mastered**:
