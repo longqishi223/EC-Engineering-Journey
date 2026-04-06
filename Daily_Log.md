@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-06
+* **Learning Content**: Software Timers: Deferred Interrupt Processing, Daemon Task Architecture & Callback Multiplexing.
+* **Core Logic**:
+  1. **Deferred Interrupt Processing**: ISR-safe APIs (e.g., `xTimerStopFromISR`) act merely as "couriers". They do not manipulate timer lists directly. Instead, they quickly drop command packets into the Timer Command Queue, deferring the heavy lifting to the Daemon Task to prevent race conditions and ensure microsecond-level ISR exit.
+  2. **The Mandatory "Priority Audit"**: `portYIELD_FROM_ISR()` is a critical hardware trigger. If an ISR wakes a higher-priority task (flagging `pdTRUE`), this macro forces an immediate PendSV context switch right before the ISR exits, guaranteeing strict real-time preemption.
+  3. **The Daemon Task (Timer Service)**: The ultimate "System Manager" with absolute authority over timer linked lists. It wakes up under two conditions: (a) instantly when a command enters the queue (to schedule the timer), and (b) when the SysTick matches the expiry time (to execute the callback).
+  4. **Callback Multiplexing (RAM/Flash Optimization)**: Mastered the industrial practice of sharing a single Callback Function across multiple timers (One-shot and Auto-reload). By extracting the unique Timer ID via `pvTimerGetTimerID()`, we achieve dynamic execution paths while saving valuable Flash memory space.
+* **Tomorrow's Plan**: Descend into the physical foundation of RTOS: Memory Management. Deconstruct `Heap_1` through `Heap_5` to uncover exactly where and how TCBs, Queues, and Task Stacks allocate physical RAM.
+
 ### 2026-04-03
 * **Learning Content**: Task Notification Physics & RTOS Causality.
 * **Core Concepts Mastered**:
