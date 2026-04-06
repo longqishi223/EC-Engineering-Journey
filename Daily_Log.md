@@ -2,7 +2,7 @@
 
 ### 2026-04-06
 * **Learning Content**: Software Timers: Deferred Interrupt Processing, Daemon Task Architecture & Callback Multiplexing.
-* **Core Logic**:
+* **Core Concepts Mastered**:
   1. **Deferred Interrupt Processing**: ISR-safe APIs (e.g., `xTimerStopFromISR`) act merely as "couriers". They do not manipulate timer lists directly. Instead, they quickly drop command packets into the Timer Command Queue, deferring the heavy lifting to the Daemon Task to prevent race conditions and ensure microsecond-level ISR exit.
   2. **The Mandatory "Priority Audit"**: `portYIELD_FROM_ISR()` is a critical hardware trigger. If an ISR wakes a higher-priority task (flagging `pdTRUE`), this macro forces an immediate PendSV context switch right before the ISR exits, guaranteeing strict real-time preemption.
   3. **The Daemon Task (Timer Service)**: The ultimate "System Manager" with absolute authority over timer linked lists. It wakes up under two conditions: (a) instantly when a command enters the queue (to schedule the timer), and (b) when the SysTick matches the expiry time (to execute the callback).
