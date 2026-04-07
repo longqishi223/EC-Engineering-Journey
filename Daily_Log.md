@@ -1,5 +1,20 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-07
+* **Learning Content**: C Language Physical Memory Mapping (Flash vs. RAM), The Duality of `static`, and FreeRTOS Mutual Exclusion (Hardware vs. Logical Locks).
+* **Core Concepts Mastered**:
+  1. **The True Nature of "Handles"**: A Handle (e.g., `TimerHandle_t`) is physically just a disguised `void *` pointer. It holds the starting address of a dynamically allocated RAM block (Heap). Evaluating `if(xTimer)` simply checks if the pointer is non-zero (i.e., RAM allocation was successful, not `NULL`).
+  2. **The Duality of `static` (Storage vs. Linkage)**: 
+     * On **Variables**: Alters *Storage Duration*. It moves the variable from the temporary Stack into the permanent Static RAM area (.data/.bss), making its lifespan match the system's uptime.
+     * On **Functions**: Alters *Linkage Visibility*. Functions permanently reside in Flash. `static` here acts as a "physical cloak," making the function strictly Private to the current `.c` file and invisible to others.
+  3. **The Absolute Physical Memory Map**: 
+     * **Flash (ROM)**: Non-volatile. Stores executable machine code (.text), read-only constants (`const`), and initializers for static variables.
+     * **RAM**: Volatile. The CPU's workbench. Contains the Stack (locals), Heap (dynamic allocations), and BSS/Data segments. Startup assembly code (`.s`) is responsible for copying initializers from Flash to RAM before `main()` executes.
+  4. **Critical Sections vs. Scheduler Suspension (Debunking Doc Errors)**:
+     * **Critical Section (`taskENTER_CRITICAL`)**: A brutal hardware lock. Modifies the CPU's `BASEPRI` register to physically mask low-priority hardware interrupts, inherently killing SysTick and PendSV (stopping all scheduling).
+     * **Scheduler Suspension (`vTaskSuspendScheduler`)**: A gentle logical lock. Hardware interrupts (ISRs) still fire normally, but the kernel places a "do not switch" flag, preventing context switches until resumed. These two locks possess independent nesting counters and must never be conceptually mixed.
+* **Tomorrow's Plan**: Capitalize on today's RAM architecture mastery to conquer FreeRTOS Memory Management. Deconstruct `pvPortMalloc` and analyze the surgical precision of `Heap_1` through `Heap_5` allocation algorithms.
+
 ### 2026-04-06
 * **Learning Content**: Software Timers: Deferred Interrupt Processing, Daemon Task Architecture & Callback Multiplexing.
 * **Core Concepts Mastered**:
