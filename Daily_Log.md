@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-08
+* **Learning Content**: Physical Memory Foundations: TCB vs. Stack Isolation, 32-Bit Bus Throughput & Hardware Alignment Constraints.
+* **Core Concepts Mastered**:
+  1. **Physical Decoupling of TCB & Stack**: Shattered the misconception that the Stack resides directly adjacent to or inside the TCB. In physical RAM, the TCB is merely a control structure (the "property deed") locked within a kernel list, while the Stack is an independently allocated memory block (the "house"). `pxStack` does not store TCB data; it is purely a pointer *inside* the TCB holding the lowest physical coordinate of the stack's foundation.
+  2. **Byte-Addressability vs. 32-Bit Throughput**: Mastered the realities of a 4GB address space. Memory consists of sequentially numbered 8-bit drawers, but a 32-bit CPU utilizes a 4-byte-wide physical data bus. While the CPU can logically read/write a single byte using hardware Byte Enable masks, the physical transaction generally activates a full 4-byte channel simultaneously.
+  3. **The Penalty of Unaligned Memory Access**: Uncovered the hardware origin of strict memory alignment (e.g., 4-byte boundaries). A 32-bit data bus is physically engineered to snap to aligned addresses like `0x0000`, `0x0004`, `0x0008`. An unaligned access (e.g., fetching a 32-bit integer starting at `0x0001`) forces the hardware to perform two separate boundary-crossing fetch cycles and internally stitch the data, severely degrading performance.
+  4. **The Read-Modify-Write (RMW) Pipeline**: Analyzed the non-atomic nature of bitwise operations. Since standard memory cannot be addressed bit-by-bit (excluding specific hardware like Cortex-M Bit-banding), modifying a single bit requires a three-step physical sequence: load the entire byte into a register, apply an ALU mask, and write the full byte back. This physical reality dictates exactly why Critical Sections are mandatory to protect variables from concurrent ISR corruption.
+* **Tomorrow's Plan**: Dive directly into the FreeRTOS memory allocator `heap_4.c`. Deconstruct the `BlockLink_t` node structure, explore how the OS enforces strict byte alignment boundaries using bitwise masking (`x & ~portBYTE_ALIGNMENT_MASK`), and master the underlying algorithm used to stitch fragmented RAM blocks back together.
+
 ### 2026-04-07
 * **Learning Content**: C Language Physical Memory Mapping (Flash vs. RAM), The Duality of `static`, and FreeRTOS Mutual Exclusion (Hardware vs. Logical Locks).
 * **Core Concepts Mastered**:
