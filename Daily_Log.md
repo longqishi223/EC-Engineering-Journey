@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-09
+* **Learning Content**: FreeRTOS Internals: `heap_4.c` Physical Memory Allocation & Kernel Double-Linked List (`list.c`) Architecture.
+* **Core Concepts Mastered**:
+  1. **Heap_4 Alignment & Coalescence**: Uncovered the hidden `BlockLink_t` overhead (the "property deed") prepended to every allocation. Mastered the bitwise masking technique `(x + (ALIGN - 1)) & ~MASK` that mathematically forces hardware-safe byte alignment without branching. Understood the algorithmic "stitching" of adjacent RAM blocks by physical address to permanently defeat memory fragmentation.
+  2. **Real-Time Concurrency in Allocation**: Analyzed why `heap_4.c` uses `vTaskSuspendAll()` instead of disabling global interrupts (`taskENTER_CRITICAL()`) during memory allocation. This brilliant design protects the heap linked list from concurrent task access while guaranteeing zero-latency response for hardware interrupts.
+  3. **The "Closed-Loop Sentinel" List Architecture**: Deconstructed the physical anatomy of `list.c`. Realized that FreeRTOS lists are circular and initialized with an indestructible `xListEnd` sentinel node holding the maximum value (`portMAX_DELAY`). This creates a perfect topological ring, completely eliminating `NULL` pointer boundary checks and saving crucial CPU branch-prediction cycles.
+  4. **O(1) Physical Extraction & Dangling Pointer Defense**: Mastered how nodes track their parent lists via `pxContainer`, allowing `uxListRemove()` to perform instantaneous physical extraction without O(N) traversal. Discovered the vital `pxIndex` fallback logic (`if (pxIndex == pxItemToRemove) pxIndex = pxPrevious`) that prevents catastrophic Hard Faults and preserves fair Round-Robin scheduling when a currently active task is destroyed.
+* **Tomorrow's Plan**: Descend into the core Task Scheduler (`tasks.c`). Trace the complete life cycle of a task, deconstruct the `vTaskDelay` blocking mechanism, and analyze exactly how `pxCurrentTCB` is manipulated during the `PendSV` hardware exception to achieve true deterministic preemption.
+
 ### 2026-04-08
 * **Learning Content**: Physical Memory Foundations: TCB vs. Stack Isolation, 32-Bit Bus Throughput & Hardware Alignment Constraints.
 * **Core Concepts Mastered**:
