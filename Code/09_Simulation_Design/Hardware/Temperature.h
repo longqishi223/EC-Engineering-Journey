@@ -1,5 +1,5 @@
-#ifndef NTC_TEMPERATURE_H
-#define NTC_TEMPERATURE_H
+#ifndef __TEMPERATURE_H
+#define __TEMPERATURE_H
 
 #include "stm32f10x.h"
 
