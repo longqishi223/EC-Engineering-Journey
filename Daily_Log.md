@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-10
+* **Learning Content**: STM32F103 Bare-Metal ADC & NTC Thermistor Integration, Integer-based Signal Processing, and Toolchain Synchronization (VS Code + Keil MDK).
+* **Core Concepts Mastered**:
+  1. **Non-Linear Sensor Calibration (LUT & Interpolation)**: Discarded computationally expensive and physically inaccurate floating-point linear equations for the NTC thermistor. Implemented a lightning-fast, integer-only Lookup Table (LUT) with piecewise linear interpolation to perfectly map the logarithmic Steinhart-Hart curve, guaranteeing precise thermal tracking without FPU overhead.
+  2. **Deterministic Signal Filtering & Resolution Deadbands**: Mitigated high-frequency electromagnetic noise by implementing an 8-sample sliding average filter. Utilized bitwise shifting (`>> 3`) instead of hardware division to preserve Cortex-M3 clock cycles. Leveraged the natural "resolution deadband" between ADC steps and integer temperatures to achieve absolute output stability, preventing future PID-induced acoustic fan jitter.
+  3. **Silicon-Level Pin Binding & Macro Safety**: Resolved a critical "0℃ output" bug caused by passing `GPIO_Pin_0` (0x01) instead of `ADC_Channel_0` (0x00). Realized that analog input channels are hardwired at the silicon level and cannot be arbitrarily remapped like digital peripherals. This macro mismatch accidentally pointed the ADC to a floating pin, triggering the LUT's open-circuit safety net.
+  4. **Modern Toolchain Architecture**: Successfully integrated VS Code (for LSP-based IntelliSense) with the Keil MDK compiler. Solved cross-directory `#include` failures by aligning Keil's internal "Include Paths" with VS Code's `c_cpp_properties.json` (`${workspaceFolder}/**`), achieving a "dual-wielding" workflow combining modern code editing with raw register-level hardware debugging.
+* **Tomorrow's Plan**: Tackle the STM32 Hardware Timer (`TIM2`). Configure the Pre-scaler (PSC) and Auto-Reload Register (ARR) to generate a mathematically precise 25kHz PWM signal compliant with Intel's 4-wire fan specification, establishing the core actuator for the EC thermal control loop.
+
 ### 2026-04-09
 * **Learning Content**: FreeRTOS Internals: `heap_4.c` Physical Memory Allocation & Kernel Double-Linked List (`list.c`) Architecture.
 * **Core Concepts Mastered**:
