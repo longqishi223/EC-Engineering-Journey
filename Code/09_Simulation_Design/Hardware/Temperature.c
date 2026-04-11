@@ -60,17 +60,28 @@ uint16_t NTC_GetFilteredADC(uint8_t channel) {
 
 int8_t NTC_ConvertToTemp_LUT(uint16_t adc_value) {
 
-    if (adc_value >= NTC_ADC_Table[0]) return 0;   // 0℃
-    if (adc_value <= NTC_ADC_Table[10]) return 100; // 100℃
+    if (adc_value >= NTC_ADC_Table[0]) return 0;   // 极寒或断路
+    if (adc_value <= NTC_ADC_Table[10]) return 100; // 极热或短路
+
     for (int i = 0; i < 10; i++) {
+        // 锁定区间
         if (adc_value <= NTC_ADC_Table[i] && adc_value > NTC_ADC_Table[i + 1]) {
-            // 简单线性插值
-            uint16_t adc_high = NTC_ADC_Table[i];
-            uint16_t adc_low = NTC_ADC_Table[i + 1];
-            uint8_t temp_high = i * 10;
-            uint8_t temp_low = (i + 1) * 10;
-            return temp_low + (temp_high - temp_low) * (adc_value - adc_low) / (adc_high - adc_low);
+            
+            // 明确物理意义：区间上限 ADC (阻值大) 和 区间下限 ADC (阻值小)
+            uint16_t adc_upper = NTC_ADC_Table[i];   
+            uint16_t adc_lower = NTC_ADC_Table[i + 1];
+            
+            // 明确物理意义：该区间对应的基础温度 (比如 i=3 时，基础温度是 30℃)
+            uint8_t base_temp = i * 10;
+            
+            // 纯正数运算：当前 ADC 值距离上限 ADC 的偏移量
+            uint16_t adc_offset = adc_upper - adc_value; 
+            uint16_t adc_span = adc_upper - adc_lower;
+            
+            // 纯正数推导公式：基础温度 + (ADC 偏移量占比 * 10℃)
+            // 先乘 10 再除，保留整数精度，全程无负数、无溢出风险！
+            return base_temp + (adc_offset * 10) / adc_span;
         }
     }
-    return 0; // 错误值
+    return 0; // 兜底保护
 }

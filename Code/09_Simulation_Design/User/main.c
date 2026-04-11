@@ -1,51 +1,66 @@
 #include "stm32f10x.h"
 #include "Delay.h"
 #include "OLED.h"
-#include "Timer.h" // 假设你有这个头文件，如果没有，见代码末尾注释
-#include "AD.h"    // 假设你有这个头文件
-
+#include "Temperature.h"
+#include "pwm.h"
+#include "uart.h"
+#include "systick.h"
 
 // 引用在 AD.c 中定义的全局变量
 // 这个变量会被 DMA 自动更新，不需要我们在 main 里手动写值
-extern volatile uint16_t AD_Value;
+//extern volatile uint16_t AD_Value;
 
 int main(void)
 {
     /* 1. 模块初始化 */
+    SysTick_Init(); // 初始化系统滴答定时器
     OLED_Init(); // 初始化屏幕
-    AD_Init();   // 初始化ADC和DMA
-    
-    // 初始化定时器 TIM3
-    // 目的：产生更新事件(Update)来触发ADC转换
-    // 公式：频率 = 72M / (PSC+1) / (ARR+1)
-    // 这里设置 PSC=71, ARR=999 -> 频率 = 1kHz (即每1ms采集一次数据)
-    Timer_Init(1000 - 1, 72 - 1); 
+    NTC_ADC_Init();   // 初始化ADC和DMA
+    PWM_SG90_Init();  // 初始化PWM
+    UART_Init();     // 初始化串口
 
-    /* 2. 显示静态界面（不变化的文字只刷一次，提高效率） */
-    OLED_ShowString(1, 1, "AD Value:");
-    OLED_ShowString(2, 1, "Volage:0.00V");
+    /* 2. 显示静态界面 */
+    OLED_ShowString(1, 1, "=== EC Thermal ===");
+    OLED_ShowString(2, 1, "ADC Raw : ");
+    OLED_ShowString(3, 1, "CPU Temp: ");
+    OLED_ShowString(3, 13, "C"); // 摄氏度单位符号
+    OLED_ShowString(4, 1, "Fan Angle: ");
+    OLED_ShowString(4, 13, "deg"); // 角度单位符号
+
+    uint32_t timer_thermal = 0; // 用于定时执行热管理逻辑的计时器
+    uint32_t timer_uart = 0; // 用于定时发送 UART 数据的计时器
+    uint32_t timer_ui = 0; // 用于定时更新 UI 的计时器
+    //uint32_t timer_pwm = 0; // 用于定时更新 PWM 的计时器
+
+    uint16_t adc_value = 0;
+    uint8_t temp_c = 0;
 
     /* 3. 主循环 */
     while (1)
     {
-        // --- 显示原始 AD 值 (0 ~ 4095) ---
-        // 参数：行, 列, 变量, 长度
-        OLED_ShowNum(1, 10, AD_Value, 4);
+        uint32_t current_tick = Get_SysTick(); // 获取当前系统滴答计数
 
-        // --- 计算并显示电压值 (0V ~ 3.3V) ---
-        // 算法：AD值 / 4095 * 3.3V
-        float Voltage = (float)AD_Value / 4095 * 3.3;
-        
-        // 显示整数部分 (比如 1.23V 中的 1)
-        OLED_ShowNum(2, 8, (uint8_t)Voltage, 1);
-        
-        // 显示小数部分 (比如 1.23V 中的 23)
-        // 技巧：(Voltage * 100) % 100 可以取出后两位小数
-        OLED_ShowNum(2, 10, (uint16_t)(Voltage * 100) % 100, 2);
+        if(current_tick - timer_thermal >= 20) // 每隔 20ms 执行一次
+        {
+            timer_thermal = current_tick; // 更新上次执行的时间
+            adc_value = NTC_GetFilteredADC(ADC_Channel_0); // 从 NTC ADC 获取滤波后的值
+            temp_c = NTC_ConvertToTemp_LUT(adc_value); // 将 ADC 值转换为温度
 
-        // --- 延时 ---
-        // 这里的延时只是为了人眼能看清数字变化
-        // ADC 的采样频率是由 Timer_Init 决定的，与这里的 Delay 无关
-        Delay_ms(100);
+            uint8_t pwm_value = (temp_c > 32) ? 180 : (temp_c > 29) ? 90 : 0; // 根据温度计算 PWM 占空比
+            PWM_SG90_SetAngle(pwm_value); // 设置风扇角度 
+        }
+
+        if(current_tick - timer_ui >= 100) // 每隔 100ms 更新一次 UI
+        {
+            timer_ui = current_tick; // 更新上次执行的时间
+            OLED_ShowNum(3, 11, temp_c, 4);
+            OLED_ShowNum(4, 11, (temp_c > 32) ? 180 : (temp_c > 29) ? 90 : 0, 3); // 显示风扇角度
+        }
+
+        if(current_tick - timer_uart >= 500) // 每隔 1s 发送一次 UART 数据
+        {
+            timer_uart = current_tick; // 更新上次执行的时间
+            printf("ADC Raw: %u, CPU Temp: %u C\r\n", adc_value, temp_c); // 通过 UART 输出 ADC 原始值和温度
+        }
     }
 }
