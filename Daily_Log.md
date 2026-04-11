@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-11
+* **Learning Content**: STM32 Hardware Timers (PWM), UART Telemetry, and Cortex-M3 SysTick Non-Blocking State Machine.
+* **Core Concepts Mastered**:
+  1. **Hardware Timer & PWM Slicing**: Configured `TIM3` to generate a precise 50Hz PWM signal for the SG90 servo actuator. Mastered the math behind the Prescaler (PSC) and Auto-Reload Register (ARR), slicing the 72MHz core clock down to a 1-microsecond resolution (`PSC = 71`) to accurately control physical servo angles via absolute microsecond pulse widths.
+  2. **UART Telemetry & Printf Redirection**: Broke the microcontroller's "mute" state by configuring `USART1` (PA9/PA10) at 115200 bps. Implemented `fputc` redirection to hijack the standard C library's `printf` stream, enabling real-time data logging to a PC terminal. Successfully bypassed the Keil "Semihosting" hard-fault trap by enabling MicroLIB.
+  3. **SysTick Non-Blocking Scheduler (RTOS Prelude)**: Completely eradicated blocking `Delay_ms()` calls from the super-loop. Awakened the Cortex-M3's internal SysTick hardware to generate a 1ms system heartbeat. Architected a time-sliced, non-blocking state machine that safely decouples execution frequencies: Thermal Control (20ms), OLED UI (100ms), and UART Logging (500ms), achieving 100% CPU utilization without task starvation.
+  4. **Multi-Step Bang-Bang Control**: Designed a highly efficient discrete state controller using nested ternary operators `(temp > 32) ? 180 : (temp > 29) ? 90 : 0`. This proves optimal for actuators requiring distinct physical thresholds (like the SG90 servo) rather than continuous proportional curves.
+* **Tomorrow's Plan**: Finalize the hardware transition from the SG90 servo to a 4-Wire PC Fan, implementing the Intel 25kHz PWM specification. Once the physical thermal loop is validated, prepare to inject FreeRTOS to replace the manual SysTick state machine with a true preemptive multitasking kernel.
+
 ### 2026-04-10
 * **Learning Content**: STM32F103 Bare-Metal ADC & NTC Thermistor Integration, Integer-based Signal Processing, and Toolchain Synchronization (VS Code + Keil MDK).
 * **Core Concepts Mastered**:
