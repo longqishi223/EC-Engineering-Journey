@@ -1,0 +1,5 @@
+Load "c:\\Users\\Hu\\Desktop\\开发\\2-1 STM32裸机开发\\Objects\\Project.axf" 
+_____^
+*** error 56: cannot open file
+Error: Flash Download failed  -  Could not load file 'c:\Users\Hu\Desktop\开发\2-1 STM32裸机开发\Objects\Project.axf'
+Flash Load finished at 17:24:17
