@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-12
+* **Learning Content**: FreeRTOS Kernel Surgical Migration, ARM Cortex-M3 Porting, and Preemptive Task Scheduling.
+* **Core Concepts Mastered**:
+  1. **Surgical Kernel Extraction**: Optimized the FreeRTOS integration by selectively extracting only 6 core files (`tasks.c`, `list.c`, `queue.c`, `port.c`, `heap_4.c`, `FreeRTOSConfig.h`) from the official source tree. Manually mapped the `RVDS/ARM_CM3` portable layer to bridge the STM32 hardware abstraction with the RTOS scheduler, achieving a minimalist and high-performance kernel footprint.
+  2. **Vector Table Harmonization**: Resolved the architectural "naming gap" between ST’s standard startup code and the FreeRTOS kernel. Successfully remapped `SVC_Handler`, `PendSV_Handler`, and `SysTick_Handler` via C-preprocessor defines, effectively handing over the CPU’s "heartbeat" control from the legacy `systick.c` to the kernel's preemptive tick handler.
+  3. **Heap_4 Memory Strategy**: Implemented the `heap_4.c` allocation algorithm, enabling a robust, thread-safe memory management scheme with automatic block coalescing. This prevents heap fragmentation, ensuring long-term stability for dynamic task creation and the system's internal stack allocation.
+  4. **Preemptive Task Decoupling**: Transformed the manual non-blocking state machine into a true multi-tasking environment. Leveraged `vTaskDelayUntil()` for the High-Priority Thermal Task (20ms) to achieve deterministic, jitter-free control, while assigning lower priorities to OLED UI (100ms) and UART Telemetry (500ms), allowing the RTOS to perform real-time context switching and resource arbitration.
+* **Tomorrow's Plan**: Transition from global variables to **FreeRTOS Queues** for thread-safe Inter-Task Communication (ITC). Begin implementing the Intel 25kHz PWM specification for the 4-wire industrial fan to replace the SG90 servo.
+
 ### 2026-04-11
 * **Learning Content**: STM32 Hardware Timers (PWM), UART Telemetry, and Cortex-M3 SysTick Non-Blocking State Machine.
 * **Core Concepts Mastered**:
