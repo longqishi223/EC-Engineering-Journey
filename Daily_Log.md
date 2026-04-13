@@ -1,5 +1,15 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-13
+* **Learning Content**: FreeRTOS IPC (Queues & Mutex), Interrupt Management (FromISR), Stack Memory Tuning, and Event-Driven UI State Machine.
+* **Core Concepts Mastered**:
+  1. **Thread-Safe IPC (Message Queues)**: Eradicated global variable data races by replacing `g_temp_c` with FreeRTOS Queues. Implemented a "Producer-Consumer" model using `xQueueOverwrite` for the high-frequency Thermal task (20ms) and `xQueueReceive` with `portMAX_DELAY` for OLED/UART tasks. This achieved a pure event-driven architecture, ensuring 0% CPU waste when no new data is pending.
+  2. **Resource Protection (Mutex)**: Secured the UART telemetry stream against task preemption collisions. Engineered a robust `Safe_Printf` wrapper utilizing FreeRTOS Mutex, `<stdarg.h>`, and `vprintf` to guarantee atomic serial transmissions. Resolved implicit C89 declaration bugs by strictly managing `semphr.h` and `configUSE_MUTEXES`.
+  3. **RTOS Interrupt Architecture (EXTI & FromISR)**: Mastered the strict hardware/software boundary in Cortex-M3. Bridged a physical EXTI4 button press to a task-level state switch using `xSemaphoreGiveFromISR` and `portYIELD_FROM_ISR` for instant preemption. Successfully bypassed the notorious "SysCall Priority Assertion" trap by enforcing `NVIC_PriorityGroup_4` and assigning a safe hardware preemption priority (Level 5). Implemented non-blocking RTOS-tick debouncing via `xTaskGetTickCount()`.
+  4. **Memory Profiling & Stack Overflow Resolution**: Diagnosed and resolved a fatal `HardFault` triggered by a stack overflow in the OLED task. Learned the critical 32-bit architecture distinction where 1 Word = 4 Bytes. Rescued the system from the 512-byte limit crash (caused by string constants and branching) by surgically expanding the task's stack to 256 words (1024 bytes).
+  5. **I2C Bus Optimization & UI State Machine**: Architected an edge-triggered UI state machine (`volatile uint8_t g_display_mode`). Eliminated I2C bus congestion and visual "screen tearing" by decoupling static UI rendering (drawn only once per mode switch via a `last_mode` shadow variable) from high-frequency dynamic data updates (refreshed every 20ms).
+* **Tomorrow's Plan**: Conduct a long-term stability burn-in test. Evaluate transitioning the UART task into a FreeRTOS Software Timer callback to reclaim another 1KB of SRAM, and prepare for the physical hardware upgrade to the 25kHz Intel PWM specification for the 4-wire industrial fan.
+
 ### 2026-04-12
 * **Learning Content**: FreeRTOS Kernel Surgical Migration, ARM Cortex-M3 Porting, and Preemptive Task Scheduling.
 * **Core Concepts Mastered**:
