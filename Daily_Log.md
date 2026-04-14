@@ -1,5 +1,15 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-14
+* **Learning Content**: STM32 USB-FS-Device Library Architecture, HID Protocol Fundamentals, Report Descriptors, and Hardware Pull-up Debugging.
+* **Core Concepts Mastered**:
+  1. **USB Hardware Enumeration Roadblock (PA12 Pull-up)**: Encountered a physical layer enumeration failure where the host PC could not recognize the STM32 USB device. Pinpointed the root cause to the absence/misconfiguration of the mandatory 1.5kΩ pull-up resistor on the USB D+ line (PA12), which is required to signal a Full-Speed device to the host. Pivoted to a software-first code analysis strategy while pending hardware correction.
+  2. **STM32 Standard Peripheral Library (USB-FS) Architecture**: Deconstructed the legacy STM32 USB-FS-Device library tree. Mapped the separation of concerns between application-layer implementation (`usb_prop.c`, `usb_desc.c`) and lower-level interrupt routing. Recognized the absence of high-level abstraction wrappers (like modern HAL's `USBD_HID_SendReport`) in favor of direct PMA (Packet Memory Area) buffer manipulation and endpoint status toggling (`SetEPTxValid()`).
+  3. **HID Protocol Anatomy (Report Descriptors)**: Deep-dived into `usb_desc.c` to decode the HID Report Descriptor (`CustomHID_ReportDescriptor` / `Joystick_ReportDescriptor`). Grasped the fundamental concept that this array acts as the device's "instruction manual," using specific Tags to define data packet structures (e.g., bitfields for button states, bytes for axis offsets), allowing the host OS to natively parse the payload without requiring custom drivers.
+  4. **Endpoint Communication & Interrupt Routing**: Traced the USB data flow architecture. Analyzed `usb_endp.c` for IN endpoint callbacks (e.g., `EP1_IN_Callback`) which act as the "tollbooth" triggering upon successful packet transmission. Mapped the hardware interrupt routing through `usb_istr.c` (Interrupt Service Routine), which acts as the central dispatcher for all USB bus events (reset, suspend, data transfer).
+  5. **Conceptual Bridge to EC Engineering**: Contextualized the current HID deep-dive within the broader PC architecture required for the upcoming Embedded Controller (EC) role. Established a baseline understanding of how HID (often mapped over I2C or USB in laptops) interacts with the system, laying the groundwork for upcoming studies into ACPI (SCI power management interrupts) and eSPI (Virtual Wires replacing legacy LPC).
+* **Tomorrow's Plan**: Resolve the hardware PA12 1.5kΩ pull-up issue to successfully enumerate the STM32 on the host PC. Deploy Wireshark with the USBPcap plugin to capture and analyze the raw HID enumeration handshake and hex data packets. Begin writing the application-layer code to map RTOS-managed physical button presses into the USB PMA buffer for endpoint transmission.
+
 ### 2026-04-13
 * **Learning Content**: FreeRTOS IPC (Queues & Mutex), Interrupt Management (FromISR), Stack Memory Tuning, and Event-Driven UI State Machine.
 * **Core Concepts Mastered**:
