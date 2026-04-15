@@ -1,5 +1,17 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-15
+* **Learning Content**: Deep-dived into HID Report Descriptor encoding mechanics, Global vs. Main Item state machine, and USB property/protocol layer architecture (`usb_prop.c`).
+* **Core Concepts Mastered**:
+  1. **Global Items Persistence & State Machine**: Grasped the fundamental architectural difference between Global and Local items. Global items (e.g., `Usage Page`, `Report Size`, `Report Count`) establish persistent state that governs all subsequent Main items until explicitly reconfigured, creating a true state machine within the descriptor array. This explains why identical prefixes (like `0x75` and `0x95`) can represent radically different physical quantities at different positions.
+  2. **The True Nature of REPORT_SIZE vs. REPORT_COUNT**: Demystified the comment error in `usb_desc.c`. `0x95` (Report Count) represents a raw **quantity** (number of fields), not a bit-width. The total bit-width is the mathematical product `REPORT_SIZE × REPORT_COUNT`. For example, `Report Size = 1 bit` combined with `Report Count = 8` yields exactly 8 bits (1 byte), not "8 bits" as the misleading comment suggested.
+  3. **USB Device Property Table Architecture**: Deconstructed the `Device_Property` struct as the "callback function pointer table" pattern. The USB library acts as a passive router, matching incoming standard/class requests (GET_DESCRIPTOR, SET_CONFIGURATION) against this table and dispatching to the appropriate handler function (e.g., `CustomHID_Data_Setup`, `CustomHID_Reset`).
+  4. **Chip Unique ID & Serial Number Generation**: Traced the physical STM32 die-level 96-bit unique identifier (`0x1FFFF7E8`-`0x1FFFF7F0`) and understood how `Get_SerialNum()` converts this into UTF-16LE Unicode strings for the USB string descriptor, enabling per-device serial numbers for inventory tracking and driver signing.
+  5. **Endpoint Initialization & USB Packet Memory Area (PMA)**: Analyzed the `CustomHID_Reset()` function's dual-endpoint initialization. ENDP0 (Control) uses bidirectional TX/RX with dedicated PMA buffers, while ENDP1 (Interrupt IN for keyboard) uses a unidirectional TX-only path with `EP_TX_NAK` default state—signaling to the host that the buffer is "not yet ready" until `SetEPTxValid()` is called.
+  6. **HID Class-Specific Request Dispatching**: Traced the filtering logic in `CustomHID_Data_Setup()` that decodes the USB request fields (`USBbmRequestType`, `USBwValue1`, `USBwIndex0`) to disambiguate between standard requests (GET_DESCRIPTOR) and HID class requests (GET_PROTOCOL), routing each to the appropriate descriptor copy routine.
+* **Career Context**: Discussed the upcoming EC role at Longcheer Technology (龙旗科技) in Shanghai's laptop division under the AI PC initiative. Contextualized HID keyboard firmware within the broader laptop EC ecosystem (USB HID over I2C, PD protocols, thermal management), and evaluated Longcheer as a legitimate ODM platform for accumulating EC specialization experience.
+* **Tomorrow's Plan**: Continue hardware debugging of the PA12 pull-up resistor. Once USB enumeration succeeds, proceed to integrate the HID keyboard report transmission into the FreeRTOS task architecture. Begin analyzing the STM32 USB interrupt routing layer (`usb_istr.c`) to understand how physical USB events trigger firmware callbacks.
+
 ### 2026-04-14
 * **Learning Content**: STM32 USB-FS-Device Library Architecture, HID Protocol Fundamentals, Report Descriptors, and Hardware Pull-up Debugging.
 * **Core Concepts Mastered**:
