@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-16
+* **Learning Content**: ACPI protocol emulation environment setup and UART command parsing state machine debugging.
+* **Core Concepts Mastered**:
+  1. **ACPI Emulation Architecture**: Built EC-to-Host command response protocol via UART on FreeRTOS. Established `$ACPI,CMD` command format and `$ACK,ret`/`$EVT,event,data` response format.
+  2. **UART Command Parsing State Machine**: Implemented character-level state machine with `\r\n` terminator recognition for command boundary detection. Uses ring buffer for interrupt-driven RX data consumption.
+  3. **Edge Detection & Event Notification**: SCI events use edge detection (comparing last state vs current state) to avoid duplicate notifications.
+  4. **Protocol Debugging Insight**: Terminal input must send `\r\n` to be recognized correctly, matching real ACPI hardware's SCI edge-triggered mechanism.
+* **Tomorrow's Plan**: Deep-dive into ACPI specific function implementations, understand real EC hardware SCI interrupt mechanism and power state transition logic.
+
 ### 2026-04-15
 * **Learning Content**: Deep-dived into HID Report Descriptor encoding mechanics, Global vs. Main Item state machine, and USB property/protocol layer architecture (`usb_prop.c`).
 * **Core Concepts Mastered**:
