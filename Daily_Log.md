@@ -1,5 +1,15 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-17
+* **Learning Content**: Deep-dived into ACPI UART command parsing state machine, ASCII character handling, and identified a boundary protection bug.
+* **Core Concepts Mastered**:
+  1. **ACPI Core Concepts**: LID (Laptop lid switch, 0=closed 1=open), AC (AC adapter connection, 1=connected), SCI (System Control Interrupt for power events), `\0` (C string terminator).
+  2. **UART Command Parsing State Machine**: Three states (IDLE→READ_CMD→READ_PARAMS), first comma skips `$ACPI,` prefix, second comma marks command end, `break` exits entire switch block.
+  3. **Boundary Protection Bug**: When `gUartParamIdx >= ACPI_MAX_PARAM`, code overwrites slot 9 instead of discarding. Correct fix: check `if (gUartParamIdx < ACPI_MAX_PARAM)` before storing.
+  4. **ASCII Filtering & Hex Escaping**: Printable range `0x20`-`0x7E`; non-printable bytes converted to hex via nibble extraction (`>> 4`, `& 0x0F`) and ternary conversion `(n<10)?'0'+n:'A'+n-10`.
+  5. **Enum vs Struct**: Enum used directly without instantiation; struct requires creating instance first, then access via `.`; pointer uses `->` operator.
+* **Tomorrow's Plan**: Continue ACPI protocol analysis, study `ACPI_ParseCommand` execution flow and SCI event triggering mechanism.
+
 ### 2026-04-16
 * **Learning Content**: ACPI protocol emulation environment setup and UART command parsing state machine debugging.
 * **Core Concepts Mastered**:
