@@ -1,5 +1,16 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-18
+* **Learning Content**: Deep-dived into Chrome EC eSPI source code — from high-level `common/espi.c` abstraction down to NPCX chip-level hardware driver `chip/npcx/espi.c` (744 lines).
+* **Core Concepts Mastered**:
+  1. **eSPI Two-Layer Architecture**: `common/espi.c` handles only signal naming (`espi_vw_names[]`) and range validation (`espi_signal_is_vw()`) with zero hardware register operations; all register-level logic lives in `chip/npcx/espi.c`. This layered design decouples upper-layer protocol logic from chip-specific implementations.
+  2. **VW Signal Three-Field Mapping Table (`vw_events_list[]`)**: Each VW signal is described by a `{name, evt_idx, evt_val}` triplet. `evt_idx` is the eSPI-spec-defined hardware register index (0x02/0x03...), while `evt_val` specifies the exact bit position within that index's 4-bit WIRE field (bit0=0x01, bit1=0x02...). This explains why SLP_S3/S4/S5 share index 0x02 but occupy different bits.
+  3. **Input vs Output Register Division**: `VWEVMS` (Input/Host→EC) stores VW signals sent by the Host, read by EC via `espi_vw_get_wire()`; `VWEVSM` (Output/EC→Host) stores VW signals sent by EC, requiring polling of the `DIRTY` bit to wait for hardware acknowledgment after writing.
+  4. **MIWU Interrupt Routing**: NPCX's Multi-function Input Wake-Up module maps hardware pin changes to VW events. `espi_vw_int_list[]` defines the MIWU table/group/num triplet for each VW signal, ultimately dispatched through `__espi_wk2a_interrupt()` and `__espi_wk2b_interrupt()` ISRs to specific event handlers.
+  5. **Event Handlers and ACPI State Machine Integration**: Each VW signal transition (e.g., `espi_vw_evt_slp_s3()`) calls `power_signal_interrupt()` to forward the signal to the `power/` module, triggering the ACPI power state machine. Events like OOB_RST/SUS_WARN also automatically trigger ACK back transmissions via `espi_vw_set_wire()`.
+  6. **Compile-Time Safety Check**: `BUILD_ASSERT(ARRAY_SIZE(espi_vw_names) == VW_SIGNAL_COUNT)` ensures the enum count strictly matches the string array — any mismatch causes an immediate build failure.
+* **Tomorrow's Plan**: Continue deep-diving into ACPI source code implementation, tracing the memory space read/write handlers in `common/acpi.c` through to chip-level hardware, establishing a complete chain from ACPI commands to eSPI VW signals.
+
 ### 2026-04-17
 * **Learning Content**: Deep-dived into ACPI UART command parsing state machine, ASCII character handling, and identified a boundary protection bug.
 * **Core Concepts Mastered**:
