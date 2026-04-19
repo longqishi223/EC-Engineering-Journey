@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-19
+* **Learning Content**: Deep-dived into ACPI source code and complete eSPI+ACPI communication chain.
+* **Core Concepts Mastered**:
+  1. **ACPI Command State Machine**: `acpi_ap_to_ec()` handles 5 commands (READ/WRITE/QUERY_EVENT/BURST_ENABLE/DISABLE). `acpi_data_count` tracks state.
+  2. **PMC Channel & IBF**: NPCX has two PMC channels (ACPI/HostCmd). IBF flag triggers `lpc_pmc_ibf_interrupt()` to dispatch.
+  3. **64-bit Host Event System**: `host_set_single_event()` sets bits. `lpc_update_host_event_status()` checks SMI/SCI/WAKE masks and generates interrupts.
+  4. **SCI# via eSPI VW**: On eSPI platforms, SCI# is a VW packet, not a GPIO.
+* **Tomorrow's Plan**: Continue ACPI power state transitions (`power/` module). Then HID protocol.
+
 ### 2026-04-18
 * **Learning Content**: Deep-dived into Chrome EC eSPI source code — from high-level `common/espi.c` abstraction down to NPCX chip-level hardware driver `chip/npcx/espi.c` (744 lines).
 * **Core Concepts Mastered**:
