@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-20
+* **Learning Content**: Completed HID (MKBP) protocol study and generated comprehensive ACPI/eSPI/HID learning document.
+* **Core Concepts Mastered**:
+  1. **MKBP Three-State Interrupt Machine**: `INTERRUPT_INACTIVE → INACTIVE_TO_ACTIVE → ACTIVE`. `activate_mkbp_with_events()` manages transitions. Four notification paths: GPIO / HOST_EVENT (SCI) / HECI / CUSTOM.
+  2. **Matrix Scanning (`read_matrix()`)**: Hardware layer drives KSO columns low via `KBSOUT` register, reads KSI rows via `KBSIN` register. Debounce logic uses `debounced_state[]` array with configurable down/up thresholds (9ms/30ms).
+  3. **Host Command System**: `DECLARE_HOST_COMMAND()` registers handlers to `__hcmds` section. Async commands return `EC_RES_IN_PROGRESS`, task wakes via `TASK_EVENT_CMD_PENDING`. LPC channel = `PMC_CHAN_2`.
+  4. **Power State Machine**: `chipset_task()` loop calls `power_handle_state()` per chipset. SLP_S3/S4/S5 signals monitored via GPIO or VW depending on platform.
+* **Tomorrow's Plan**: Review generated document and continue with Host Command protocol deep-dive if needed.
+
 ### 2026-04-19
 * **Learning Content**: Deep-dived into ACPI source code and complete eSPI+ACPI communication chain.
 * **Core Concepts Mastered**:
