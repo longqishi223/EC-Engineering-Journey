@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-22
+* **Learning Content**: Reviewed generated `ACPI_eSPI_HID_Protocol_Analysis.md` document up to line 800 (ACPI + eSPI sections).
+* **Core Concepts Reinforced**:
+  1. **ACPI Burst Mode**: 4-byte read cache pre-fetches consecutive memmap data. `EC_CMD_ACPI_BURST_ENABLE` returns 0x90 (ACPI 5.0 ACK). Safety deferred function auto-disables after 1 second.
+  2. **VWEVSM DIRTY Bit**: After EC writes VW signal, must poll DIRTY bit (bit16) until Host clears it to confirm receipt.
+  3. **MIWU Interrupt Handling**: `PND` register reads pending bits, `PCL` register clears them (write-1-clear pattern).
+  4. **`!!` Operator**: Double negation converts any value to strict 0 or 1 boolean.
+* **Tomorrow's Plan**: Continue reviewing document from line 800 (HID/MKBP section + appendix).
+
 ### 2026-04-20
 * **Learning Content**: Completed HID (MKBP) protocol study and generated comprehensive ACPI/eSPI/HID learning document.
 * **Core Concepts Mastered**:
