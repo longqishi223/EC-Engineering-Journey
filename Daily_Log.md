@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-23
+* **Learning Content**: Reviewed ACPI_eSPI_HID_Protocol_Analysis.md up to line 1200, covering Host Command and Hook/Task systems (extensions of ACPI/eSPI topics).
+* **Core Concepts Mastered**:
+  1. **DECLARE_HOST_COMMAND Macro**: Uses `__attribute__((section(".rodata.hcmds.xxx")))` to place each command struct in its own section, collected by linker into `__hcmds[]` array. The `##` operator concatenates tokens, `#` stringifies.
+  2. **Host Command Dispatch**: `host_packet_receive()` validates checksum, `host_command_received()` routes to handler, `host_command_task()` processes async commands via `EC_RES_IN_PROGRESS`. LPC channel = PMC_CHAN_2 (vs ACPI's PMC_CHAN_1).
+  3. **Hook System**: `DECLARE_HOOK()` places callbacks in `.rodata.{hook_type}` sections, `hook_notify()` calls them in priority order. `DECLARE_DEFERRED()` schedules delayed callbacks via `hook_call_deferred()`.
+  4. **Task-Wake Mechanism**: `task_wake()` sends `TASK_EVENT_WAKE`, `task_wait_event(-1)` blocks indefinitely until event arrives. Cooperative scheduling — tasks must yield via `task_wait_event()`.
+* **Tomorrow's Plan**: Continue reviewing document from line 1200 (remaining Hook/Task + Appendix).  
+
 ### 2026-04-22
 * **Learning Content**: Reviewed generated `ACPI_eSPI_HID_Protocol_Analysis.md` document up to line 800 (ACPI + eSPI sections).
 * **Core Concepts Reinforced**:
