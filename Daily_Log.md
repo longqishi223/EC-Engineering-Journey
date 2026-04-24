@@ -1,5 +1,15 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-24
+* **Learning Content**: Completed Chapter 10 of ACPI_eSPI_HID_Protocol_Analysis.md — line-by-line source code analysis of 7 core .c files.
+* **Core Concepts Mastered**:
+  1. **ACPI `acpi_read()` Burst Cache**: `memcpy(acpi_read_cache.data, memmap_addr, ACPI_VALID_CACHE_SIZE(addr))` pre-fetches up to 4 bytes. Cache miss when `start_addr > addr` or `addr - start_addr >= 4`. `ACPI_VALID_CACHE_SIZE` calculates actual copy size to prevent OOB.
+  2. **eSPI VW Signal Access**: `espi_vw_set_wire()` writes output via VWEVSM register (EC→Host). `espi_vw_get_wire()` reads input via VWEVMS register (Host→EC). Both map signal enums through `vw_events_list[]` lookup table.
+  3. **MKBP Interrupt State Machine**: `activate_mkbp_with_events()` manages `INTERRUPT_INACTIVE → INACTIVE_TO_ACTIVE → ACTIVE` transitions. Uses `interrupt_id` to handle race conditions. Four notification paths: GPIO / HOST_EVENT / HECI / CUSTOM.
+  4. **Matrix Scan Flow**: `keyboard_scan_task()` → `check_keys_changed()` → `read_matrix()` → `keyboard_raw_drive_column()/keyboard_raw_read_rows()`. Debounce uses `debouncing[]` array and `scan_edge_index[][]` timestamps.
+  5. **Ghost Detection**: `has_ghosting()` uses "x & (x-1)" trick — if `common & (common-1)` is non-zero, multiple keys pressed on intersecting rows (ghosting).
+* **Tomorrow's Plan**: Practical EC development workflow (build/flash/debug).
+
 ### 2026-04-23
 * **Learning Content**: Reviewed ACPI_eSPI_HID_Protocol_Analysis.md up to line 1200, covering Host Command and Hook/Task systems (extensions of ACPI/eSPI topics).
 * **Core Concepts Mastered**:
