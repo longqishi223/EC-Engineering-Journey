@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-27
+* **Learning Content**: Chapter 10 source code deep-dive (continued from 04-24). Focused on eSPI VW signal analysis in `chip/npcx/espi.c`. Added Chapter 11 x86 vs ARM architecture overview to `ACPI_eSPI_HID_Protocol_Analysis.md`.
+* **Core Concepts Mastered**:
+  1. **NPCX_HIPMST(n) PMC Status Register**: Host Interface PMC Status register at offset `PM_CH_BASE_ADDR(n)+0x000`. Key bits: IBF(0x02)=Input Buffer Full, FRMH(0x08)=Command vs Data, F0(bit2)=Processing Flag, ST1/ST2(bit5/6)=SCI/SMI flags. Used for EC-Host handshake via SET_BIT/CLEAR_BIT.
+  2. **PMC (Power Management Controller)**: ACPI-spec-defined channel for Host→EC command interface. Chrome EC uses `lpc_pmc_ibf_interrupt()` to handle ACPI commands, distinguished from Host Command channel (PMC_CHAN_2). FRMH bit indicates first byte is command.
+  3. **eSPI VW Signal Mechanism**: `espi_vw_set_wire()` writes EC→Host via VWEVSM registers (with DIRTY polling). `espi_vw_get_wire()` reads Host→EC via VWEVMS registers. `vw_events_list[]` maps `{signal_name, evt_idx, evt_val}` for all 20 VW signals.
+  4. **eSPI PLTRST# Handler**: `espi_vw_evt_pltrst()` calls `host_register_init()` on deassert and triggers `HOOK_CHIPSET_RESET` deferred call on assert. Updates AP boot time tracking.
+* **Tomorrow's Plan**: Practical EC development workflow — build system, flash tools, debug methods.
+
 ### 2026-04-24
 * **Learning Content**: Completed Chapter 10 of ACPI_eSPI_HID_Protocol_Analysis.md — line-by-line source code analysis of 7 core .c files.
 * **Core Concepts Mastered**:
