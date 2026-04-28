@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-28
+* **Learning Content**: Chapter 10.3-10.4 continued. Deep-dived into MKBP event handling (`mkbp_event.c`) and keyboard matrix scanning subsystem (`keyboard_scan.c`, `keyboard_raw.c`).
+* **Core Concepts Mastered**:
+  1. **MKBP Event State Machine**: `set_inactive_if_no_events()` clears to INTERRUPT_INACTIVE only when `state.events==0`, calls `mkbp_set_host_active(0)` to notify AP. `force_mkbp_if_events()` is a 1-second safety net that retries up to 3 times if AP fails to respond.
+  2. **Ghosting Detection**: `has_ghosting()` uses `x & (x-1)` trick to detect >1 bit set — if non-zero, multiple keys pressed on intersecting rows, which causes phantom key. Returns 1 to reject all key reports when ghosting detected.
+  3. **keyboard_scan_task() States**: Wait state (`task_wait_event(-1)`) → Poll mode (`check_keys_changed()` loop) → timeout → back to wait. `force_poll` flag triggers immediate polling. `KEYBOARD_COLUMN_NONE/ALL` control column drive modes.
+  4. **KSO/KSI Matrix Scanning**: KSO=Key Scanner Output (column drive), KSI=Key Scanner Input (row read). NPCX has 18 columns split across KBSOUT0 (KSO0-15) and KBSOUT1 (KSO16-17). Rows read via `~NPCX_KBSIN` (inverted, active-low).
+* **Tomorrow's Plan**: EC development workflow — build system, flash tools, debug methods.
+
 ### 2026-04-27
 * **Learning Content**: Chapter 10 source code deep-dive (continued from 04-24). Focused on eSPI VW signal analysis in `chip/npcx/espi.c`. Added Chapter 11 x86 vs ARM architecture overview to `ACPI_eSPI_HID_Protocol_Analysis.md`.
 * **Core Concepts Mastered**:
