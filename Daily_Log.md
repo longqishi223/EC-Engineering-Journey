@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-29
+* **Learning Content**: Added Chapter 12 (EC Development Workflow) and Chapter 13 (Power/Charger Subsystem) to `ACPI_eSPI_HID_Protocol_Analysis.md`.
+* **Core Concepts Mastered**:
+  1. **EC Build System**: `make BOARD=<board_name>` generates `build/<BOARD>/ec.bin` + `ec.elf`. Config hierarchy: `chip → baseboard → board`. Kconfig config files at `common/Kconfig`, `chip/npcx/build.mk`.
+  2. **Flash Tools**: `./util/flash_ec --board=<name> --image=<path>` with `servod` running. NPCX uses `flashrom` via servod. Need USB connection: Servo probe → target board → servod on Linux.
+  3. **Power State Machine**: `enum power_state { POWER_G3, POWER_S5, POWER_S4, POWER_S3, POWER_S0 }` mapped to ACPI states. `chipset_task()` main loop handles transitions via `power_handle_state()`.
+  4. **eSPI VW Power Signals**: `VW_SLP_S3_L`/`S4_L`/`S5_L` defined in `vw_events_list[]` at index 0x02. `SLP_S3_SIGNAL_L` macro conditionally selects VW or GPIO mode. `espi_vw_power_signal_interrupt()` routes to `power_signal_interrupt()`.
+* **Tomorrow's Plan**: Review and summarize all 13 chapters, prepare for practical EC development environment setup.
+
 ### 2026-04-28
 * **Learning Content**: Chapter 10.3-10.4 continued. Deep-dived into MKBP event handling (`mkbp_event.c`) and keyboard matrix scanning subsystem (`keyboard_scan.c`, `keyboard_raw.c`).
 * **Core Concepts Mastered**:
