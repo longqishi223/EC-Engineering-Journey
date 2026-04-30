@@ -1,5 +1,13 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-04-30
+* **Learning Content**: Continued I2C protocol deep-dive — clarified GPIO mode naming and I2C address-direction mechanics.
+* **Core Concepts Mastered**:
+  1. **AF_OD (Alternate Function Open-Drain)**: GPIO mode for hardware I2C pins. AF = Alternate Function (pin connects to I2C peripheral), OD = Open-Drain (needs external pull-up). Contrast with Software I2C's GPIO_Mode_Out_OD where CPU manually toggles GPIO registers.
+  2. **I2C_Direction_Transmitter**: `I2C_Send7bitAddress()` takes a direction parameter. Hardware I2C automatically encodes the R/W bit into the address byte — no manual bit-shift needed. EV6 confirms address sent + ACK received.
+  3. **Device Address vs Register Address**: Distinction between MPU6050_ADDRESS (0xD0, the I2C device address on the bus) and RegAddress (internal register like 0x6B). Write sequence: device address → register address → data.
+* **Tomorrow's Plan**: Review Chrome EC I2C driver framework (`i2c_*`), or focus on practical hardware debugging with logic analyzer.
+
 ### 2026-04-29
 * **Learning Content**: Added Chapter 12 (EC Development Workflow) and Chapter 13 (Power/Charger Subsystem) to `ACPI_eSPI_HID_Protocol_Analysis.md`.
 * **Core Concepts Mastered**:
