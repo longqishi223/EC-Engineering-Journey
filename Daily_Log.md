@@ -1,5 +1,15 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-05-01
+* **Learning Content**: Completed all 5 subsystem analyses — I2C, PWM, GPIO, SPI/eSPI, Flash/Memory. Wrote detailed line-by-line function analysis for each subsystem in `ACPI_eSPI_HID_Protocol_Analysis.md` (Chapter 15-19).
+* **Core Concepts Mastered**:
+  1. **Chrome EC I2C Framework**: Layered architecture (common/i2c_controller.c → chip/npcx/i2c.c). Key functions: `i2c_xfer()`, `i2c_xfer_unlocked()`, `chip_i2c_xfer()`. Uses task blocking (`task_wait_event_mask`) instead of polling. NACK retry up to 3 times.
+  2. **PWM/Timer Subsystem**: `pwm_set_duty()` → `pwm_set_raw_duty()`. `fan_smart_control()` with closed-loop RPM control using MFT (Multi-Function Timer). Step algorithm: |diff|≥2000→step=20, ≥1000→step=10, etc.
+  3. **GPIO/MIWU Subsystem**: NPCX uses MIWU (Multi-function Input Wake-Up) for 192 GPIO interrupts (3 tables × 8 groups × 8 bits). `gpio_pre_init()` → `gpio_set_flags_by_mask()` → `gpio_interrupt()`. `gpio_wui_table[]` maps signals to MIWU hardware.
+  4. **SPI/eSPI**: `spi_transaction()` uses mutex + async pattern. eSPI has 4 channels: VW, OOB, Flash, Peripheral. `espi_vw_set_wire()` writes VWEVSM register. Traditional SPI uses GPIO CS, eSPI embeds CS in protocol.
+  5. **Flash/Memory**: RO/RW partition layout. `jump_to_image()` performs sysjump. `system_add_jump_tag()` preserves data across images via `jdata` struct. A/B backup with rollback protection.
+* **Tomorrow's Plan**: Summarize all 19 chapters, identify any knowledge gaps, or proceed to practical EC debugging practice.
+
 ### 2026-04-30
 * **Learning Content**: Continued I2C protocol deep-dive — clarified GPIO mode naming and I2C address-direction mechanics.
 * **Core Concepts Mastered**:
