@@ -1,6 +1,6 @@
 # 📅 My EC Learning and Development Log
 
-### 2026-05-01
+### 2026-05-02
 * **Learning Content**: Deep-dived into Chrome EC I2C framework and PWM subsystem.
 * **Core Concepts Mastered**:
   1. **i2c_xfer() / i2c_xfer_unlocked()**: Layered I2C transfer with lock protection and 3x NACK retry. State machine: SMB_IDLE → SMB_CONTROLLER_START → SMB_WRITE_OPER → SMB_READ_OPER → SMB_IDLE.
