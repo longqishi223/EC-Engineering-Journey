@@ -1,6 +1,16 @@
 # 📅 My EC Learning and Development Log
 
 ### 2026-05-01
+* **Learning Content**: Deep-dived into Chrome EC I2C framework and PWM subsystem.
+* **Core Concepts Mastered**:
+  1. **i2c_xfer() / i2c_xfer_unlocked()**: Layered I2C transfer with lock protection and 3x NACK retry. State machine: SMB_IDLE → SMB_CONTROLLER_START → SMB_WRITE_OPER → SMB_READ_OPER → SMB_IDLE.
+  2. **task_wait_event_mask()**: Task blocks and waits for event. I2C ISR wakes it via `task_set_event()`.
+  3. **pwm_set_duty() → pwm_set_raw_duty()**: Converts percentage 0-100 to 16-bit raw 0-65535.
+  4. **fan_smart_control()**: Closed-loop RPM with step algorithm (|diff|≥2000→step=20, ≥1000→step=10...).
+  5. **Bit mask ops**: `|= (1<<x)` set bit, `&= ~(1<<x)` clear bit.
+* **Tomorrow's Plan**: Continue GPIO/MIWU (Chapter 17), then SPI/eSPI (Chapter 18).
+
+### 2026-05-01
 * **Learning Content**: Completed all 5 subsystem analyses — I2C, PWM, GPIO, SPI/eSPI, Flash/Memory. Wrote detailed line-by-line function analysis for each subsystem in `ACPI_eSPI_HID_Protocol_Analysis.md` (Chapter 15-19).
 * **Core Concepts Mastered**:
   1. **Chrome EC I2C Framework**: Layered architecture (common/i2c_controller.c → chip/npcx/i2c.c). Key functions: `i2c_xfer()`, `i2c_xfer_unlocked()`, `chip_i2c_xfer()`. Uses task blocking (`task_wait_event_mask`) instead of polling. NACK retry up to 3 times.
