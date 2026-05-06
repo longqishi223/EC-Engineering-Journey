@@ -1,5 +1,13 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-05-06
+* **Learning Content**: Deep-dived into Chrome EC GPIO, and SPI/eSPI subsystems.
+* **Core Concepts Mastered**:
+  1. **GPIO MIWU**: NPCX 192 interrupts via 3 tables × 8 groups × 8 bits. Pending cleared by writing 1 (W1C). `gpio_irq_handlers[]` routes to handlers.
+  2. **spi_transaction()**: Uses mutex lock + async pattern. CS controlled via GPIO. `spi_transaction_async()` loops with BSY/RBF polling.
+  3. **eSPI 4 channels**: VW (power signals), OOB, Flash, Peripheral. VW signals defined in `enum espi_vw_signal`.
+* **Tomorrow's Plan**: Review Flash/Memory (Chapter 19), then start practical debugging practice.
+
 ### 2026-05-02
 * **Learning Content**: Deep-dived into Chrome EC I2C framework and PWM subsystem.
 * **Core Concepts Mastered**:
