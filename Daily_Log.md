@@ -1,5 +1,15 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-05-07
+* **Learning Content**: Practical hardware I2C debugging with Saleae logic analyzer, STM32 software vs hardware I2C comparison.
+* **Core Concepts Mastered**:
+  1. **Saleae Logic Analyzer I2C Capture**: Successfully captured STM32 hardware I2C (PB10=SCL, PB11=SDA) communication with MPU6050 using 8MHz sampling rate. Configured I2C protocol analyzer to decode: Start condition → 7-bit device address + R/W bit → ACK → Repeated Start → 8-bit register address → ACK → 8-bit data from slave → ... → Stop.
+  2. **I2C Waveform Analysis**: Confirmed MPU6050 default address 0xD0 (write). Observed complete I2C sequence: START → ADDR+W → ACK → RESTART → REGADDR → ACK → DATA → ... → STOP.
+  3. **Software vs Hardware I2C**: Software I2C uses GPIO bit-banging (any pin, high CPU overhead) vs Hardware I2C uses dedicated silicon state machine (specific pins, low CPU overhead, more reliable).
+  4. **GPIO_Mode_AF_OD**: Hardware I2C must use Alternate Function Open-Drain mode — OD allows multiple devices to pull bus low without short circuit.
+  5. **defined() macro**: `#if defined(CONFIG_X)` checks if macro is defined (vs `#ifdef` which is equivalent but less flexible for complex expressions).
+* **Tomorrow's Plan**: Continue practical debugging — analyze I2C read/write bursts, verify MPU6050 register values match expected data sheet values.
+
 ### 2026-05-06
 * **Learning Content**: Deep-dived into Chrome EC GPIO, and SPI/eSPI subsystems.
 * **Core Concepts Mastered**:
