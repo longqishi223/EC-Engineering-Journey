@@ -1,5 +1,19 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-05-08
+* **Learning Content**: Reviewed Power/Charger/Battery subsystem (Chapter 20) and added three new chapters (21-23) to learning document. Clarified several C language syntax questions.
+* **Core Concepts Mastered**:
+  1. **Chrome EC Power/Charger/Battery Architecture**: Four charging states (ST_IDLE/ST_DISCHARGE/ST_CHARGE/ST_PRECHARGE), `charger_task()` main polling loop, `decide_charge_state()` decision logic, `shutdown_on_critical_battery()` with timer-based shutdown.
+  2. **Charger Abstraction Layer**: `struct charger` function pointer table, `charger_get_params()` reads charger IC via I2C, `charger_closest_voltage()` clamps to valid range.
+  3. **charge_manager Multi-Port Coordination**: Supplier priority array (DEDICATED=0 > PD=1 > Type-C=2), `available_charge[][]` matrix across ports and suppliers.
+  4. **memset() Usage**: `memset(ptr, value, num)` fills memory with value. Commonly used to zero-initialize structures: `memset(&chg, 0, sizeof(chg))`.
+  5. **Designated Initializer `[index] = value`**: C99 syntax for array initialization. `supplier_priority[CHARGE_SUPPLIER_DEDICATED] = 0` is equivalent to `[10] = 0` in the initializer list. Makes code more readable and order-independent.
+  6. **break vs continue in switch**: `break` exits switch only (for loop continues). `continue` in switch jumps to next loop iteration (not directly applicable in switch).
+  7. **USB-C PD Protocol**: PDO (Power Data Object) types, Source/Sink negotiation flow, `enum pd_power_role` (PD_ROLE_SINK=0, PD_ROLE_SOURCE=1).
+  8. **ISL923x Charger Driver**: Register definitions (CHG_CURRENT, SYS_VOLTAGE_MAX, ADAPTER_CURRENT_LIMIT), `isl923x_set_voltage()`, initialization sequence.
+  9. **MAX17055 Fuel Gauge**: I2C battery monitoring IC, `battery_get_params()` reads voltage/current/temperature/SoC, unit conversion formulas (VOLTAGE_CONV, CURRENT_CONV).
+* **Tomorrow's Plan**: Continue reviewing document, focus on any knowledge gaps or start practical debugging practice.
+
 ### 2026-05-07
 * **Learning Content**: Practical hardware I2C debugging with Saleae logic analyzer, STM32 software vs hardware I2C comparison.
 * **Core Concepts Mastered**:
