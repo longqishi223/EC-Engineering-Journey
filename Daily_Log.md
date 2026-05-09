@@ -1,5 +1,18 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-05-09
+* **Learning Content**: Deep-dived into USB-C PD protocol (Chapter 21), Charger IC drivers (Chapter 22), and debugging techniques (Chapter 23). Clarified several C language syntax questions.
+* **Core Concepts Mastered**:
+  1. **|= (Bitwise OR Assignment)**: `flags |= BATT_FLAG_BAD_VOLTAGE` preserves existing flags while adding new one. `flags = BATT_FLAG_BAD_VOLTAGE` would overwrite all flags.
+  2. **goto Statement**: Unconditional jump in C. Used for error handling cleanup (e.g., `if (ret) goto cleanup`). Chrome EC uses it in I2C/SPI communication error paths.
+  3. **raw_read16() Return Value**: Returns 0 on success, negative error code (like -EIO) on failure. Not 1.
+  4. **register abbreviation**: `reg` in Chrome EC code means "register" - hardware register address or value. Common in I2C/SPI register operations.
+  5. **Function return self**: `isl923x_set_voltage()` wrapping `isl9237_set_voltage()` - common pattern for chip series abstraction. Provides unified interface for ISL923x family.
+  6. **USB-C PD Protocol**: PDO types (Fixed/Battery/Variable/Augmented), Source/Sink negotiation flow, PDO structure (voltage in 50mV units, current in 10mA units).
+  7. **ISL923x Charger Registers**: CONTROL1 (0x1B), CHG_CURRENT (0x15), ADAPTER_CURRENT_LIMIT1 (0x38), initialization with trickle charging and PROCHOT debounce.
+  8. **MAX17055 Fuel Gauge**: I2C-based battery monitoring, `battery_get_params()` reads all battery metrics, `battery_is_present()` with 2.8s startup delay detection.
+* **Tomorrow's Plan**: Continue reviewing document, practice debugging with console commands.
+
 ### 2026-05-08
 * **Learning Content**: Reviewed Power/Charger/Battery subsystem (Chapter 20) and added three new chapters (21-23) to learning document. Clarified several C language syntax questions.
 * **Core Concepts Mastered**:
