@@ -1,5 +1,20 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-05-10
+* **Learning Content**: Studied Chapter 24 (Power Management Subsystem deep-dive) and Chapter 25 (Host Command Protocol deep-dive). Discussed hands-on learning plan and build environment setup.
+* **Core Concepts Mastered**:
+  1. **Power State Machine (power/common.c)**: Enum with 15 states split into steady-states (G3/S5/S4/S3/S0) and transition-states (G3S5/S5S3/S3S0...). Signal snapshot mechanism (`power_update_signals()`) captures all GPIO states atomically. Event-driven via `task_wait_event()` + `task_wake()` — no polling.
+  2. **chipset_task() Main Loop**: Infinite loop: chipset-specific handling (`power_handle_state()`) → generic steady-state handling (`power_common_state()`) → state change notification (`hook_notify()`).
+  3. **Power Button Debounce**: 30ms timer-based debounce (`power_button_change_deferred()`), 3-layer protection (hardware Schmitt trigger + s/w debounce + lid-close masking).
+  4. **Apollo Lake Power Sequencing**: EC enables PP3300/PP5000 → waits PGOOD → asserts RSMRST# → asserts PWRBTN# → PCH releases SLP_S4#/SLP_S3# → EC enables core voltage → ALL_SYS_PGOOD → SYS_PWROK → PLTRST# → S0.
+  5. **Host Command Protocol (V3)**: Request (6B header) + Response (7B header) RPC model. Checksum: all bytes sum to 0. 200+ commands registered via `DECLARE_HOST_COMMAND` with linker-sorted `.rodata.hcmds` section for O(log n) binary search.
+  6. **host_command_received() ISR-Task Split**: ISR does minimal work (save args, wake task), except for reboot (immediate) and get_comms_status (immediate). Task does actual command processing.
+  7. **host_packet_receive() 6-Layer Defense**: Driver error → too small → too large → wrong version → incomplete data → bad checksum.
+  8. **EC↔PD MCU via I2C Host Command**: Same Host Command protocol packets over I2C bus, 3 retries on bus error.
+  9. **HOOK Mechanism**: State changes broadcast via `hook_notify()` (CHIPSET_STARTUP/RESUME/SUSPEND/SHUTDOWN/HARD_OFF, POWER_BUTTON_CHANGE, AC_CHANGE, BATTERY_SOC_CHANGE).
+  10. **Build Environment**: `make BOARD=host -j$(nproc)` compiles EC as Linux native executable. Planning to set up Ubuntu VM for hands-on practice.
+* **Tomorrow's Plan**: Set up Ubuntu VM, run `make BOARD=host`, add custom console command.
+
 ### 2026-05-09
 * **Learning Content**: Reviewed charge_state.c and charger driver code, asked several C language syntax questions.
 * **Core Concepts Mastered**:
