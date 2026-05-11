@@ -5,12 +5,6 @@
 * **Core Concepts Mastered**:
   1. **PCH (Platform Controller Hub)**: EC doesn't connect to CPU directly — PCH bridges eSPI/LPC bus, SCI#/SMI# interrupts, and power state management between them.
   2. **Power State Machine (power/common.c)**: 15 states — steady (G3/S5/S4/S3/S0) vs. transition (G3S5/S5S3/...). `chipset_task()` loop: chipset-specific → common state → hook_notify(). ISR only records signals + wakes task; actual state transition happens in task context.
-  3. **Signal Snapshot (`power_update_signals()`)**: Captures all power GPIOs atomically into a bitmask, preventing "half-old half-new" misreads during concurrent signal changes.
-  4. **Event-Driven Waiting (`power_wait_mask_signals_timeout()`)**: `task_wait_event(timeout)` puts task to sleep; `task_wake()` wakes it. No polling — power-efficient and responsive.
-  5. **Apollo Lake Full Power-Up Sequence (6 steps)**: EC enables PP3300/PP5000 → waits PGOOD → asserts RSMRST# → asserts PWRBTN# → PCH releases SLP_S4#/SLP_S3# → EC enables core voltage → ALL_SYS_PGOOD → SYS_PWROK → PLTRST# → S0.
-  6. **Power Button Debounce (30ms)**: GPIO ISR → disable keyboard scan (prevents refresh+power false combo) → 30ms timer (resets on new edge) → confirm valid → `HOOK_POWER_BUTTON_CHANGE` + Host Event to AP.
-  7. **Low-Battery Boot Inhibit (`||` vs `&&`)**: `charge_prevent_power_on()` checks boot threshold (e.g., 5%); `charge_want_shutdown()` checks shutdown threshold (e.g., 3%). Boot threshold > shutdown threshold = hysteresis prevents power-on/power-off oscillation. `||` because either reason alone should block boot — at 4%, `want_shutdown`=false but `prevent_power_on`=true; `&&` would wrongly allow boot.
-  8. **Build Environment**: `make BOARD=host run-<test>` compiles and runs unit tests natively on Linux (~130 tests). No hardware, cross-compiler, or full submodules needed. Fixed 4 compatibility issues: ① `termio.h` → `termios.h` ② `PTHREAD_MUTEX_INITIALIZER` → dynamic init (clang 21 vs glibc) ③ `mallinfo()` → `mallinfo2()` + `%d` → `%zu` ④ `run_host_test` path resolution.
 * **Tomorrow's Plan**: Review the 4 compatibility fixes in detail, understand practical value of the build environment for EC development.
 
 ### 2026-05-10
