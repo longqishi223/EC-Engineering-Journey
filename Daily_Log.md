@@ -1,5 +1,15 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-05-12
+* **Learning Content**: Studied Chapter 25 (Host Command Protocol deep-dive). Discussed hands-on learning plan and build environment setup.
+* **Core Concepts Mastered**:
+  1. **Power Button Debounce**: 30ms timer-based debounce (`power_button_change_deferred()`), 3-layer protection (hardware Schmitt trigger + s/w debounce + lid-close masking).
+  2. **Apollo Lake Power Sequencing**: EC enables PP3300/PP5000 → waits PGOOD → asserts RSMRST# → asserts PWRBTN# → PCH releases SLP_S4#/SLP_S3# → EC enables core voltage → ALL_SYS_PGOOD → SYS_PWROK → PLTRST# → S0.
+  3. **Host Command Protocol (V3)**: Request (6B header) + Response (7B header) RPC model. Checksum: all bytes sum to 0. 200+ commands registered via `DECLARE_HOST_COMMAND` with linker-sorted `.rodata.hcmds` section for O(log n) binary search.
+  4. **host_command_received() ISR-Task Split**: ISR does minimal work (save args, wake task), except for reboot (immediate) and get_comms_status (immediate). Task does actual command processing.
+  5. **host_packet_receive() 6-Layer Defense**: Driver error → too small → too large → wrong version → incomplete data → bad checksum.
+* **Tomorrow's Plan**: Set up Ubuntu VM, run `make BOARD=host`, add custom console command.
+
 ### 2026-05-11
 * **Learning Content**: Completed Chapter 24 (Power Management Subsystem source code line-by-line analysis) and Chapter 26 (build environment setup). Successfully compiled and ran first Chrome EC unit test (`battery_config`) on Ubuntu VM.
 * **Core Concepts Mastered**:
