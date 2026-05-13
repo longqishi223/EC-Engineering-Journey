@@ -1,5 +1,12 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-05-13
+* **Learning Content**: Studied Chapter 25 (Host Command Protocol deep-dive). Discussed hands-on learning plan and build environment setup.
+* **Core Concepts Mastered**:
+  1. **EC↔PD MCU via I2C Host Command**: Same Host Command protocol packets over I2C bus, 3 retries on bus error.
+  2. **HOOK Mechanism**: State changes broadcast via `hook_notify()` (CHIPSET_STARTUP/RESUME/SUSPEND/SHUTDOWN/HARD_OFF, POWER_BUTTON_CHANGE, AC_CHANGE, BATTERY_SOC_CHANGE).
+* **Tomorrow's Plan**: Set up Ubuntu VM, run `make BOARD=host`, add custom console command.
+
 ### 2026-05-12
 * **Learning Content**: Studied Chapter 25 (Host Command Protocol deep-dive). Discussed hands-on learning plan and build environment setup.
 * **Core Concepts Mastered**:
