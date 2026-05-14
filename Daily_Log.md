@@ -1,5 +1,11 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-05-14
+* **Learning Content**: Discussed hands-on learning plan and build environment setup.
+* **Core Concepts Mastered**:
+  1. **Build Environment**: `make BOARD=host -j$(nproc)` compiles EC as Linux native executable. Planning to set up Ubuntu VM for hands-on practice.
+* **Tomorrow's Plan**: Set up Ubuntu VM, run `make BOARD=host`, add custom console command.
+
 ### 2026-05-13
 * **Learning Content**: Studied Chapter 25 (Host Command Protocol deep-dive). Discussed hands-on learning plan and build environment setup.
 * **Core Concepts Mastered**:
