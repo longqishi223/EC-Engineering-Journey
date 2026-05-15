@@ -1,5 +1,14 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-05-15
+* **Learning Content**: Transitioned from theory to hands-on practice: created Phase 1 learning plan with 4 coding exercises.
+* **Core Concepts Mastered**:
+  1. Added `CPRINTS` trace in `set_charge_state()` (`common/charge_state.c:770`) — prints every state transition with AC/battery/SOC context.
+  2. Wrote `battery_health` console command (`common/battery.c:330`) — health score (100pts), temperature/voltage/SOC check, GOOD/FAIR/POOR rating.
+  3. Prepared breaker exercise: change `BATTERY_LEVEL_SHUTDOWN` from 3 to 50 in `include/battery.h:45`, observe which tests fail.
+  4. Read 3 test files: `power_button.c` (GPIO sim + debounce test), `battery_config.c` (CBI battery info), `charge_manager.c` (supplier priority + mock functions).
+* **Tomorrow's Plan**: Run all 4 exercises in VM (`make BOARD=host`), verify ccprintf output, fix any compilation issues with `battery_health`, break and restore `BATTERY_LEVEL_SHUTDOWN` test.
+
 ### 2026-05-14
 * **Learning Content**: Discussed hands-on learning plan and build environment setup.
 * **Core Concepts Mastered**:
