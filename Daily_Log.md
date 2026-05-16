@@ -1,5 +1,16 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-05-16
+* **Learning Content**: Read `chip/stm32/registers.h` — the common hardware register map for all STM32 variants in Chrome EC.
+* **Core Concepts Mastered**:
+  1. **File Split Architecture**: Originally 3000+ lines of nested `#if` per chip variant. Refactored into family-specific files (`registers-stm32f0.h`, `registers-stm32f4.h`, ...), conditionally included at bottom. Same pattern as NPCX (`registers-npcx5/7/9.h`) and MCHP (`registers-mec152x/1701/172x.h`).
+  2. **Timer Peripheral**: Full register map — CR1 (CEN/UDIS/DIR/CMS/ARPE), CCMR1 (OC1M = PWM mode select), CCER (output enable + polarity), PSC/ARR/CCR1-4. 32-bit timers have separate `TIM32_*` macros. `struct timer_ctlr` declared `volatile` to prevent compiler optimizing out repeated reads.
+  3. **I2C Port Addressing**: `stm32_i2c_reg(port, offset)` = `STM32_I2C1_BASE + (port * 0x400) + offset`. STM32L4/L5 special-case port 3 to `I2C4_BASE` (FMPI2C4).
+  4. **Dual Watchdog**: WWDG (window, with EWI early interrupt) + IWDG (independent, KR magic unlock 0x5555/0xAAAA/0xCCCC, runs on LSI oscillator — survives system clock failure).
+  5. **USB FS Device**: Complete endpoint/CNTR/ISTR/DADDR/BTABLE register map. BCDR for BC1.2 charger detection. EP status states: VALID/NAK/STALL/DISAB with TX/RX DTOG (data toggle).
+  6. **STM32's EC Role**: Not a main EC chip — serves as USB PD controller, sensor hub, HID keyboard emulation, or debug console.
+* **Tomorrow's Plan**: Read one variant-specific register file to compare additions, then map register definitions to driver code in `chip/stm32/`.
+
 ### 2026-05-15
 * **Learning Content**: Transitioned from theory to hands-on practice: created Phase 1 learning plan with 4 coding exercises.
 * **Core Concepts Mastered**:
