@@ -1,5 +1,15 @@
 # 📅 My EC Learning and Development Log
 
+### 2026-05-17
+* **Learning Content**: Read `chip/stm32/clock-stm32f3.c` and `chip/stm32/system.c`, with focus on C language attributes and hardware clock control patterns.
+* **Core Concepts Mastered**:
+  1. **Anonymous struct in union**: `struct { uint32_t lo; uint32_t hi; } le;` — no tag needed, `le` is a member variable not a type. `typedef struct` only creates type alias, no variable, so it doesn't work inside union.
+  2. **`__attribute__((unused))`**: Suppresses "set but not used" warning. In `clock_wait_bus_cycles()`, `unused = STM32_DMA1_REGS->isr` reads a hardware register purely for bus cycle delay — the value is discarded, `volatile` prevents optimization, attribute silences the compiler.
+  3. **`__attribute__((weak))`**: Weak symbol — allows unit test code to override functions/variables with same-name strong symbols at link time. `test_mockable` macro expands to `weak` in `TEST_BUILD`, empty in production.
+  4. **Other GCC attributes**: `noreturn` (panic), `section` (custom memory layout), `packed` (exact register offset), `aligned`, `always_inline`, `constructor`, `format(printf)` — all orthogonal, can be combined.
+  5. **RCC clock gating**: `clock_enable_module()` controls `STM32_RCC_APB2ENR` / `APB1ENR` — set/clear individual bits to gate peripheral clocks on/off. ISR = Interrupt Status Register (not IRQ), each bit maps to a DMA channel event.
+* **Tomorrow's Plan**: Continue reading system.c and explore STM32 clock tree initialization path.
+
 ### 2026-05-16
 * **Learning Content**: Read `chip/stm32/registers.h` — the common hardware register map for all STM32 variants in Chrome EC.
 * **Core Concepts Mastered**:
